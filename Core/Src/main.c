@@ -37,9 +37,9 @@
 #define En_value 0x30
 #define En_value_length 9
 #define Position_angle 0x36
-#define Position_angle_length 7
+#define Position_angle_length 6
 #define Position_error 0x39
-#define Position_error_length 6
+#define Position_error_length 4
 #define Enable_move 0xF3
 #define Set_rotation 0xF6
 #define Stop 0xF7
@@ -71,6 +71,9 @@ void SystemClock_Config(void);
 bool flag;
 uint8_t transmit[8];
 uint8_t receive[8];
+uint16_t encoder_value = 0;
+int32_t encoder_rotations = 0;
+float angle_en=0;
 int32_t read_rotation = 0;
 float angle = 0;
 int16_t read_error = 0;
@@ -91,6 +94,16 @@ void MKS_read_param(uint8_t param, uint8_t length_of_param){
 	HAL_UART_Transmit(&huart1, transmit, 3, 10);
 	HAL_UART_Receive_IT(&huart1, receive, length_of_param);
 	HAL_Delay(10);
+}
+
+void MKS_check_read_param(uint8_t param, uint8_t length_of_param){
+	do{
+		transmit[0] = Address;
+		transmit[1] = param;
+		transmit[2] = CRC_calc(2);
+		HAL_UART_Transmit(&huart1, transmit, 3, 10);
+		HAL_UART_Receive_IT(&huart1, receive, length_of_param);
+	}while(transmit[length_of_param] != CRC_calc(length_of_param));
 }
 
 void MKS_set_param(uint8_t param, uint8_t value){
@@ -129,6 +142,10 @@ void MKS_set_rotation_speed(uint8_t speed, bool clockwise){
 	}else{
 		speed |= 0x80;
 	}
+	transmit[0] = Address;
+	transmit[1] = Rotate;
+	transmit[2] = (uint8_t)speed;
+	transmit[3] = CRC_calc(3);
 }
 
 void MKS_stop(void){
@@ -171,6 +188,7 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_UART_Init(&huart1);
+  MKS_set_param(0x90, 0x02);
   MKS_set_param(Enable_move, 0x01);
   /* USER CODE END 2 */
 
@@ -178,10 +196,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(read_rotation < 4000000 && read_rotation > -4000000){
+	  if(read_rotation < 400000 && read_rotation > -400000){
 		  MKS_rotate(18, 15, flag);
 	  }
-	  HAL_Delay(10);
+	  HAL_Delay(100);
 	  MKS_read_param(Position_angle, Position_angle_length);
 	  MKS_read_param(Position_angle, Position_angle_length);
 	  read_rotation = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
@@ -191,12 +209,28 @@ int main(void)
 	  MKS_read_param(Position_error, Position_error_length);
 	  read_error = (int16_t)((receive[1] << 8) + (receive[2]));
 	  angle_err = (float)(read_error)/(encoder_quality/one_rotation_in_degrees);
+	  HAL_Delay(10);
+	  MKS_read_param(En_value, En_value_length);
+	  MKS_read_param(En_value, En_value_length);
+	  encoder_rotations = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
+	  encoder_value = (uint16_t)((receive[5] << 8) + receive[6]);
+	  angle_en = (float)(encoder_value)/(encoder_quality/one_rotation_in_degrees);
 	  HAL_Delay(200);
-	  if(angle > 718){
+//	  if(angle > 10){
+//		  flag = true;
+//	  }
+//	  if(angle < -180){
+//		  flag = false;
+//	  }
+
+	  if(encoder_rotations >= 1){
 		  flag = true;
 	  }
-	  if(angle < -718){
+	  if(encoder_rotations <= -1){
 		  flag = false;
+	  }
+	  if(read_rotation > 800000 || read_rotation < -800000){
+		  MKS_stop();
 	  }
     /* USER CODE END WHILE */
 
