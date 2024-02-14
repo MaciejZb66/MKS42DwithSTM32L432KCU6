@@ -23,7 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdbool.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -33,6 +33,20 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define Address 0xE0
+#define En_value 0x30
+#define En_value_length 9
+#define Position_angle 0x36
+#define Position_angle_length 7
+#define Position_error 0x39
+#define Position_error_length 6
+#define Enable_move 0xF3
+#define Set_rotation 0xF6
+#define Stop 0xF7
+#define Rotate 0xFD
+#define one_full_rotation_pulses 3200
+#define one_rotation_in_degrees 360.0f
+#define encoder_quality (float)(1<<16)
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -54,7 +68,76 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+bool flag;
+uint8_t transmit[8];
+uint8_t receive[8];
+int32_t read_rotation = 0;
+float angle = 0;
+int16_t read_error = 0;
+float angle_err = 0;
 
+uint8_t CRC_calc(uint8_t length){
+	uint8_t sum = 0;
+	for(int i = 0; i < length; i++){
+		sum += transmit[i];
+	}
+	return sum;
+}
+
+void MKS_read_param(uint8_t param, uint8_t length_of_param){
+	transmit[0] = Address;
+	transmit[1] = param;
+	transmit[2] = CRC_calc(2);
+	HAL_UART_Transmit(&huart1, transmit, 3, 10);
+	HAL_UART_Receive_IT(&huart1, receive, length_of_param);
+	HAL_Delay(10);
+}
+
+void MKS_set_param(uint8_t param, uint8_t value){
+	transmit[0] = Address;
+	transmit[1] = param;
+	transmit[2] = value;
+	transmit[3] = CRC_calc(3);
+	HAL_UART_Transmit(&huart1, transmit, 4, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT(&huart1, receive, 3);
+}
+
+void MKS_rotate(uint16_t rot, uint8_t speed, bool clockwise){
+	uint32_t pulses;
+	if(clockwise){
+		speed &= 0x7F;
+	}else{
+		speed |= 0x80;
+	}
+	pulses = rot * one_full_rotation_pulses / one_rotation_in_degrees;
+	transmit[0] = Address;
+	transmit[1] = Rotate;
+	transmit[2] = (uint8_t)speed;
+	transmit[3] = (uint8_t)(pulses >> 24);
+	transmit[4] = (uint8_t)(pulses >> 16);
+	transmit[5] = (uint8_t)(pulses >> 8);
+	transmit[6] = (uint8_t)(pulses);
+	transmit[7] = CRC_calc(7);
+	HAL_UART_Transmit(&huart1, transmit, 8, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT(&huart1, receive, 3);
+	HAL_Delay(10);
+}
+
+void MKS_set_rotation_speed(uint8_t speed, bool clockwise){
+	if(clockwise){
+		speed &= 0x7F;
+	}else{
+		speed |= 0x80;
+	}
+}
+
+void MKS_stop(void){
+	transmit[0] = Address;
+	transmit[1] = Stop;
+	transmit[2] = CRC_calc(2);
+	HAL_UART_Transmit(&huart1, transmit, 3, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT(&huart1, receive, 3);
+}
 /* USER CODE END 0 */
 
 /**
@@ -87,13 +170,34 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_UART_Init(&huart1);
+  MKS_set_param(Enable_move, 0x01);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if(read_rotation < 4000000 && read_rotation > -4000000){
+		  MKS_rotate(18, 15, flag);
+	  }
+	  HAL_Delay(10);
+	  MKS_read_param(Position_angle, Position_angle_length);
+	  MKS_read_param(Position_angle, Position_angle_length);
+	  read_rotation = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
+	  angle = (float)(read_rotation)/(encoder_quality/one_rotation_in_degrees);
+	  HAL_Delay(10);
+	  MKS_read_param(Position_error, Position_error_length);
+	  MKS_read_param(Position_error, Position_error_length);
+	  read_error = (int16_t)((receive[1] << 8) + (receive[2]));
+	  angle_err = (float)(read_error)/(encoder_quality/one_rotation_in_degrees);
+	  HAL_Delay(200);
+	  if(angle > 718){
+		  flag = true;
+	  }
+	  if(angle < -718){
+		  flag = false;
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
