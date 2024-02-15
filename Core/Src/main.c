@@ -69,6 +69,7 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 bool flag;
+uint8_t tester;
 uint8_t transmit[8];
 uint8_t receive[8];
 uint16_t encoder_value = 0;
@@ -79,6 +80,10 @@ float angle = 0;
 int16_t read_error = 0;
 float angle_err = 0;
 
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+
+}
+
 uint8_t CRC_calc(uint8_t length){
 	uint8_t sum = 0;
 	for(int i = 0; i < length; i++){
@@ -87,23 +92,24 @@ uint8_t CRC_calc(uint8_t length){
 	return sum;
 }
 
+
 void MKS_read_param(uint8_t param, uint8_t length_of_param){
 	transmit[0] = Address;
 	transmit[1] = param;
 	transmit[2] = CRC_calc(2);
-	HAL_UART_Transmit(&huart1, transmit, 3, 10);
-	HAL_UART_Receive_IT(&huart1, receive, length_of_param);
+	HAL_UART_Transmit_IT(&huart1, transmit, 3);
+	HAL_UART_Receive_IT(&huart1, &receive[0], length_of_param);
 	HAL_Delay(10);
 }
 
 void MKS_check_read_param(uint8_t param, uint8_t length_of_param){
+	transmit[0] = Address;
+	transmit[1] = param;
+	transmit[2] = CRC_calc(2);
 	do{
-		transmit[0] = Address;
-		transmit[1] = param;
-		transmit[2] = CRC_calc(2);
-		HAL_UART_Transmit(&huart1, transmit, 3, 10);
+		HAL_UART_Transmit_IT(&huart1, transmit, 3);
 		HAL_UART_Receive_IT(&huart1, receive, length_of_param);
-	}while(transmit[length_of_param] != CRC_calc(length_of_param));
+	}while(receive[length_of_param] != CRC_calc(length_of_param));
 }
 
 void MKS_set_param(uint8_t param, uint8_t value){
@@ -111,7 +117,7 @@ void MKS_set_param(uint8_t param, uint8_t value){
 	transmit[1] = param;
 	transmit[2] = value;
 	transmit[3] = CRC_calc(3);
-	HAL_UART_Transmit(&huart1, transmit, 4, HAL_MAX_DELAY);
+	HAL_UART_Transmit_IT(&huart1, transmit, 4);
 	HAL_UART_Receive_IT(&huart1, receive, 3);
 }
 
@@ -131,9 +137,8 @@ void MKS_rotate(uint16_t rot, uint8_t speed, bool clockwise){
 	transmit[5] = (uint8_t)(pulses >> 8);
 	transmit[6] = (uint8_t)(pulses);
 	transmit[7] = CRC_calc(7);
-	HAL_UART_Transmit(&huart1, transmit, 8, HAL_MAX_DELAY);
+	HAL_UART_Transmit_IT(&huart1, transmit, 8);
 	HAL_UART_Receive_IT(&huart1, receive, 3);
-	HAL_Delay(10);
 }
 
 void MKS_set_rotation_speed(uint8_t speed, bool clockwise){
@@ -143,7 +148,7 @@ void MKS_set_rotation_speed(uint8_t speed, bool clockwise){
 		speed |= 0x80;
 	}
 	transmit[0] = Address;
-	transmit[1] = Rotate;
+	transmit[1] = Set_rotation;
 	transmit[2] = (uint8_t)speed;
 	transmit[3] = CRC_calc(3);
 }
@@ -152,7 +157,7 @@ void MKS_stop(void){
 	transmit[0] = Address;
 	transmit[1] = Stop;
 	transmit[2] = CRC_calc(2);
-	HAL_UART_Transmit(&huart1, transmit, 3, HAL_MAX_DELAY);
+	HAL_UART_Transmit_IT(&huart1, transmit, 3);
 	HAL_UART_Receive_IT(&huart1, receive, 3);
 }
 /* USER CODE END 0 */
@@ -188,6 +193,7 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_UART_Init(&huart1);
+  flag = true;
   MKS_set_param(0x90, 0x02);
   MKS_set_param(Enable_move, 0x01);
   /* USER CODE END 2 */
@@ -197,7 +203,8 @@ int main(void)
   while (1)
   {
 	  if(read_rotation < 400000 && read_rotation > -400000){
-		  MKS_rotate(18, 15, flag);
+		  //MKS_rotate(18, 15, flag);
+		  MKS_set_rotation_speed(10, flag);
 	  }
 	  HAL_Delay(100);
 	  MKS_read_param(Position_angle, Position_angle_length);
@@ -215,7 +222,9 @@ int main(void)
 	  encoder_rotations = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
 	  encoder_value = (uint16_t)((receive[5] << 8) + receive[6]);
 	  angle_en = (float)(encoder_value)/(encoder_quality/one_rotation_in_degrees);
-	  HAL_Delay(200);
+	  tester = 0;
+	  HAL_Delay(400);
+
 //	  if(angle > 10){
 //		  flag = true;
 //	  }
@@ -225,12 +234,15 @@ int main(void)
 
 	  if(encoder_rotations >= 1){
 		  flag = true;
+		  MKS_stop();
 	  }
 	  if(encoder_rotations <= -1){
 		  flag = false;
+		  MKS_stop();
 	  }
 	  if(read_rotation > 800000 || read_rotation < -800000){
 		  MKS_stop();
+		  MKS_set_param(Enable_move, 0);
 	  }
     /* USER CODE END WHILE */
 
