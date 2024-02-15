@@ -1,0 +1,52 @@
+\documentclass[]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,polish]{babel}
+\usepackage{polski}
+\usepackage{fdsymbol}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{fancyhdr} % do nagłówków
+\usepackage{float} %precyzyjne umiejscowienie 
+\usepackage{hyperref} %używanie hiperłączy
+\usepackage{color} %używanie kolorów
+\usepackage[dvipsnames]{xcolor} %custom colory
+\usepackage{graphicx} %do grafik
+\newgeometry{tmargin=3.5cm}
+\newgeometry{lmargin=2.5cm}
+\newgeometry{bmargin=0.5cm}
+\newgeometry{rmargin=2.5cm}
+\definecolor{aqua}{RGB}{0 255 255} %nowy kolor
+\definecolor{gray}{RGB}{49 54 59} %szary
+\color{white} %domyślny kolor liter
+\pagecolor{gray} %tło pliku
+\setlength{\textheight}{23cm} %wysokość strony tekstu
+\setlength{\topmargin}{-20mm} %domyślne ustawienie górnego marginesu na 1cal
+\setlength{\parindent}{0mm} %usunięcie domyślnego wcięcia akapitu
+\setcounter{section}{-1} %numer pierwszej sekcji -1
+\setcounter{page}{1} %numer pierwszej strony
+\hypersetup{ %ustawienia hiperłączy
+	colorlinks=true, linkcolor=aqua, pdftitle=0 
+}
+\let \epsilon \varepsilon %lepszy wariant epsilona
+\let \phi \varphi %lepszy wariant phi
+\newcommand{\laplace}{\mathcal{L}} 
+\newcommand{\ilaplace}{\mathcal{L}^{-1}}
+\newcommand{\tab}{\hspace*{10mm}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\sspace}{\hspace*{3mm}}
+\addto\captionspolish{\renewcommand{\contentsname}{\empty}} % pusty tytuł spisu treści
+\title{MKS Servo 42D documentation}
+\author{MaciejZb66}
+\date{}
+\begin{document}
+	\maketitle
+	\pagestyle{fancy}
+	\lhead{}
+	\chead{MKS Servo 42D documentation}
+	\rhead{}	
+	\lfoot{}
+	%\cfoot{\thepage}
+	\cfoot{\hyperlink{}{\thepage}}
+\end{document}
