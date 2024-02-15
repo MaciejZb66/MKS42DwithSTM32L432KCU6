@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.12) (preloaded format=pdflatex 2024.1.14)  15 FEB 2024 17:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.12) (preloaded format=pdflatex 2024.1.14)  15 FEB 2024 17:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**./document.tex
-(document.tex
+**./Documentation.tex
+(Documentation.tex
 LaTeX2e <2023-11-01>
 L3 programming layer <2024-01-04>
 (C:\Users\4mzr2\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
@@ -652,8 +652,8 @@ tex.def
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count292
 \l__pdf_internal_box=\box55
-) (document.aux)
-\openout1 = `document.aux'.
+) (Documentation.aux)
+\openout1 = `Documentation.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 43.
 LaTeX Font Info:    ... okay on input line 43.
@@ -711,9 +711,9 @@ LaTeX Font Info:    ... okay on input line 43.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package hyperref Info: Link coloring ON on input line 43.
-(document.out) (document.out)
+(Documentation.out) (Documentation.out)
 \@outlinefile=\write3
-\openout3 = `document.out'.
+\openout3 = `Documentation.out'.
 
 
 (C:\Users\4mzr2\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
@@ -801,26 +801,27 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 
 {C:/Users/4mzr2/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/4mzr
-2/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/pl/plrm.enc}] (document.aux)
+2/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/pl/plrm.enc}]
+(Documentation.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2024-01-04>
  ***********
-Package rerunfilecheck Info: File `document.out' has not changed.
+Package rerunfilecheck Info: File `Documentation.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 14963 strings out of 474485
- 226889 string characters out of 5743734
+ 14964 strings out of 474485
+ 226997 string characters out of 5743734
  1926528 words of memory out of 5000000
  37048 multiletter control sequences out of 15000+600000
  568189 words of font info for 68 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,6n,79p,284b,455s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,6n,79p,289b,455s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/4mzr2/AppData/Local/Programs/MiKTeX/fonts/type1/public/pl/plr10.pfb
 ><C:/Users/4mzr2/AppData/Local/Programs/MiKTeX/fonts/type1/public/pl/plr12.pfb>
 <C:/Users/4mzr2/AppData/Local/Programs/MiKTeX/fonts/type1/public/pl/plr17.pfb>
-Output written on document.pdf (1 page, 19512 bytes).
+Output written on Documentation.pdf (1 page, 19512 bytes).
 PDF statistics:
  27 PDF objects out of 1000 (max. 8388607)
  2 named destinations out of 1000 (max. 500000)
