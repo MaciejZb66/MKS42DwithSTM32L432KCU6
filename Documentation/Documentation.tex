@@ -48,5 +48,188 @@
 	\rhead{}	
 	\lfoot{}
 	%\cfoot{\thepage}
-	\cfoot{\hyperlink{}{\thepage}}
+	\cfoot{\hyperlink{tablelink}{\thepage}}
+	\section{Table of contents}
+	\hypertarget{tablelink}{}
+	\tableofcontents
+	\newpage
+	\section{MKS servo 42D UART used commands}
+	Typical frame: \\
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\multicolumn{4}{|c|}{STM to MKS} \\ \hline
+		0 & 1 & ... & last \\ \hline
+		Slave address & command & data & CRC \\ \hline
+	\end{tabular}
+	\\
+	\begin{tabular}{|c|c|c|} 
+		\hline
+		\multicolumn{3}{|c|}{MKS to STM} \\ \hline
+		0 & ... & last \\ \hline
+		Slave address & data & CRC \\ \hline
+	\end{tabular}
+	\\
+	Where CRC i control sum of other bytes.
+	\subsection{Read parameter commands}
+	\subsubsection*{Read encoder value (Command 0x30)}
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\multicolumn{3}{|c|}{STM to MKS} \\ \hline
+		0 & 1 & 2 \\ \hline
+		Slave address & 0x30 & CRC \\ \hline		
+	\end{tabular} 
+	\\
+	\begin{tabular}{|c|c|c|c|c|c|c|c|}
+		\hline
+		\multicolumn{8}{|c|}{MKS to STM} \\ \hline
+		0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
+		Slave address & \multicolumn{4}{|c|}{rotations (int32t)} & \multicolumn{2}{|c|}{encoder value (uint16t)} & CRC \\ \hline
+	\end{tabular}\\
+	Angle calculation:
+	$$\theta = v*\cfrac{360^\circ}{2^{16}-1}$$
+	v - encoder value \\
+	$\theta$ - angle \\
+	\subsubsection*{Read motor rotation (Command 0x36)}
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\multicolumn{3}{|c|}{STM to MKS} \\ \hline
+		0 & 1 & 2 \\ \hline
+		Slave address & 0x36 & CRC \\ \hline		
+	\end{tabular} 
+	\\
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+		\multicolumn{6}{|c|}{MKS to STM} \\ \hline
+		0 & 1 & 2 & 3 & 4 & 5  \\ \hline
+		Slave address & \multicolumn{4}{|c|}{position (int32t)} & CRC \\ \hline
+	\end{tabular}\\
+	Angle calculation:
+	$$\theta = v*\cfrac{360^\circ}{2^{16}-1}$$
+	v - encoder value \\
+	$\theta$ - angle \\
+	\subsubsection*{Read difference between expected and real angle (Command 0x39)}
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\multicolumn{3}{|c|}{STM to MKS} \\ \hline
+		0 & 1 & 2 \\ \hline
+		Slave address & 0x39 & CRC \\ \hline		
+	\end{tabular} 
+	\\
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\multicolumn{4}{|c|}{MKS to STM} \\ \hline
+		0 & 1 & 2 & 3  \\ \hline
+		Slave address & \multicolumn{2}{|c|}{difference (int16t)} & CRC \\ \hline
+	\end{tabular}\\
+	Angle calculation:
+	$$\theta = v*\cfrac{360^\circ}{2^{16}-1}$$
+	v - encoder value \\
+	$\theta$ - angle \\
+	\subsection{Set parameter commands}
+		\subsubsection*{Calibrate (Command 0x80)}
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\multicolumn{4}{|c|}{STM to MKS} \\ \hline
+		0 & 1 & 2 & 3\\ \hline
+		Slave address & 0x80 & 0x00 & CRC \\ \hline		
+	\end{tabular} 
+	\\
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\multicolumn{3}{|c|}{MKS to STM} \\ \hline
+		0 & 1 & 2  \\ \hline
+		Slave address & Status (uint8t) & CRC \\ \hline
+	\end{tabular}\\
+	Status meaning:\\
+	0x01 - Calibration success \\
+	0x02 - Calibration fail
+	\subsection{Rotation control}
+	\subsubsection*{Enable move (Command 0xF3)}
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\multicolumn{4}{|c|}{STM to MKS} \\ \hline
+		0 & 1 & 2 & 3\\ \hline
+		Slave address & 0xF3 & isEnable (uint8t) & CRC \\ \hline		
+	\end{tabular}\\ 
+	isEnable meaning:\\
+	0x00 - disable (can't move)\\
+	0x01 - enable (can move)
+	\\
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\multicolumn{3}{|c|}{MKS to STM} \\ \hline
+		0 & 1 & 2  \\ \hline
+		Slave address & Status (uint8t) & CRC \\ \hline
+	\end{tabular}\\
+	Status meaning:\\
+	0x00 - set failed \\
+	0x01 - set success 
+	\subsubsection*{Rotate (given only speed) (Command 0xF6)}
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\multicolumn{4}{|c|}{STM to MKS} \\ \hline
+		0 & 1 & 2 & 3\\ \hline
+		Slave address & 0xF6 & speed & CRC \\ \hline		
+	\end{tabular}\\ 	
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\multicolumn{3}{|c|}{MKS to STM} \\ \hline
+		0 & 1 & 2  \\ \hline
+		Slave address & Status (uint8t) & CRC \\ \hline
+	\end{tabular}\\
+	Speed table:\\
+	\begin{tabular}{|c|c|}
+	\hline
+	\multicolumn{2}{|c|}{Speed bytes} \\ \hline
+	0 & 1-7 \\ \hline
+	dir & value (unsigned) \\ \hline
+	\end{tabular}\\
+	Status meaning:\\
+	0x00 - set failed \\
+	0x01 - set success \\
+	\subsubsection*{Rotate (given angle and speed)(Command 0xFD)}
+	\begin{tabular}{|c|c|c|c|c|c|c|c|}
+		\hline
+		\multicolumn{8}{|c|}{STM to MKS} \\ \hline
+		0 & 1 & 2 & 3 & 4 & 5 & 6 &7 \\ \hline
+		Slave address & 0xFD & speed &\multicolumn{4}{|c|}{pulses} & CRC \\ \hline		
+	\end{tabular}\\ 	
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\multicolumn{3}{|c|}{MKS to STM} \\ \hline
+		0 & 1 & 2  \\ \hline
+		Slave address & Status (uint8t) & CRC \\ \hline
+	\end{tabular}\\
+	Speed table:\\
+	\begin{tabular}{|c|c|}
+		\hline
+		\multicolumn{2}{|c|}{Speed bytes} \\ \hline
+		0 & 1-7 \\ \hline
+		dir & value (unsigned) \\ \hline
+	\end{tabular}\\
+	Pulses calculation:
+	$$\theta = p*\cfrac{3200}{360^\circ}$$
+	p - pulses\\
+	$\theta$ - angle\\
+	Status meaning:\\
+	0x00 - set failed \\
+	0x01 - set success \\
+	\subsubsection*{Stop rotation (Command 0xF7)}
+		\begin{tabular}{|c|c|c|}
+		\hline
+		\multicolumn{3}{|c|}{STM to MKS} \\ \hline
+		0 & 1 & 2 \\ \hline
+		Slave address & 0xF7 & CRC \\ \hline		
+	\end{tabular}\\ 	
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\multicolumn{3}{|c|}{MKS to STM} \\ \hline
+		0 & 1 & 2  \\ \hline
+		Slave address & Status (uint8t) & CRC \\ \hline
+	\end{tabular}\\
+		Status meaning:\\
+	0x00 - stop failed \\
+	0x01 - stop success \\
+	\section{My functions}
+	
 \end{document}
