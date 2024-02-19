@@ -110,7 +110,7 @@ void MKS_read_param(uint8_t param, uint8_t length_of_param){
 		if(indx > length_of_param){
 			break;
 		}
-	}while(indx != length_of_param);
+	}while(indx != length_of_param - 1);
 	indx = 0;
 	//HAL_UART_Receive_IT(&huart1, receive, length_of_param);
 	HAL_Delay(10);
@@ -162,7 +162,7 @@ void MKS_rotate(uint16_t rot, uint8_t speed, bool clockwise){
 		if(indx > response_length){
 			break;
 		}
-	}while(indx != response_length);
+	}while(indx != response_length - 1);
 	indx = 0;
 	//HAL_UART_Receive_IT(&huart1, receive, 3);
 }
@@ -182,7 +182,7 @@ void MKS_set_rotation_speed(uint8_t speed, bool clockwise){
 		if(indx > response_length){
 			break;
 		}
-	}while(indx != response_length);
+	}while(indx != response_length - 1);
 	indx = 0;
 }
 
@@ -195,7 +195,7 @@ void MKS_stop(void){
 		if(indx > response_length){
 			break;
 		}
-	}while(indx != response_length);
+	}while(indx != response_length - 1);
 	indx = 0;
 	//HAL_UART_Receive_IT(&huart1, receive, 3);
 }
@@ -233,8 +233,10 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_UART_Init(&huart1);
   flag = true;
+  indx = 0;
   HAL_UART_Receive_IT(&huart1, buff, 1);
   MKS_set_param(0x90, 0x02);
+
   MKS_set_param(Enable_move, 0x01);
   /* USER CODE END 2 */
 
