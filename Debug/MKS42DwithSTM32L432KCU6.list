@@ -27,23 +27,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  11 .ARM.attributes 00000030  00000000  00000000  0002000c  2**0
                   CONTENTS, READONLY
- 12 .debug_info   0000c5fc  00000000  00000000  0002003c  2**0
+ 12 .debug_info   0000ce26  00000000  00000000  0002003c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 00001e29  00000000  00000000  0002c638  2**0
+ 13 .debug_abbrev 00001f8b  00000000  00000000  0002ce62  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 000009d0  00000000  00000000  0002e468  2**3
+ 14 .debug_aranges 000009e8  00000000  00000000  0002edf0  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_ranges 00000908  00000000  00000000  0002ee38  2**3
+ 15 .debug_ranges 00000910  00000000  00000000  0002f7d8  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  0001ff5f  00000000  00000000  0002f740  2**0
+ 16 .debug_macro  000205d7  00000000  00000000  000300e8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0000da56  00000000  00000000  0004f69f  2**0
+ 17 .debug_line   0000ea9b  00000000  00000000  000506bf  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000c013a  00000000  00000000  0005d0f5  2**0
+ 18 .debug_str    000c0157  00000000  00000000  0005f15a  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000050  00000000  00000000  0011d22f  2**0
+ 19 .comment      00000050  00000000  00000000  0011f2b1  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00002694  00000000  00000000  0011d280  2**2
+ 20 .debug_frame  000026a4  00000000  00000000  0011f304  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -350,432 +350,432 @@ Disassembly of section .text:
  80004cc:	4770      	bx	lr
  80004ce:	bf00      	nop
 
-080004d0 <MX_GPIO_Init>:
-/* USER CODE END 1 */
-
-/** Pinout Configuration
-*/
-void MX_GPIO_Init(void)
-{
- 80004d0:	b480      	push	{r7}
- 80004d2:	b083      	sub	sp, #12
- 80004d4:	af00      	add	r7, sp, #0
-
-  /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOA_CLK_ENABLE();
- 80004d6:	4b09      	ldr	r3, [pc, #36]	; (80004fc <MX_GPIO_Init+0x2c>)
- 80004d8:	6cdb      	ldr	r3, [r3, #76]	; 0x4c
- 80004da:	4a08      	ldr	r2, [pc, #32]	; (80004fc <MX_GPIO_Init+0x2c>)
- 80004dc:	f043 0301 	orr.w	r3, r3, #1
- 80004e0:	64d3      	str	r3, [r2, #76]	; 0x4c
- 80004e2:	4b06      	ldr	r3, [pc, #24]	; (80004fc <MX_GPIO_Init+0x2c>)
- 80004e4:	6cdb      	ldr	r3, [r3, #76]	; 0x4c
- 80004e6:	f003 0301 	and.w	r3, r3, #1
- 80004ea:	607b      	str	r3, [r7, #4]
- 80004ec:	687b      	ldr	r3, [r7, #4]
-
-}
- 80004ee:	bf00      	nop
- 80004f0:	370c      	adds	r7, #12
- 80004f2:	46bd      	mov	sp, r7
- 80004f4:	f85d 7b04 	ldr.w	r7, [sp], #4
- 80004f8:	4770      	bx	lr
- 80004fa:	bf00      	nop
- 80004fc:	40021000 	.word	0x40021000
-
-08000500 <HAL_UART_RxCpltCallback>:
+080004d0 <HAL_UART_RxCpltCallback>:
 int32_t read_rotation = 0;
 float angle = 0;
 int16_t read_error = 0;
 float angle_err = 0;
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
- 8000500:	b580      	push	{r7, lr}
- 8000502:	b082      	sub	sp, #8
- 8000504:	af00      	add	r7, sp, #0
- 8000506:	6078      	str	r0, [r7, #4]
+ 80004d0:	b580      	push	{r7, lr}
+ 80004d2:	b082      	sub	sp, #8
+ 80004d4:	af00      	add	r7, sp, #0
+ 80004d6:	6078      	str	r0, [r7, #4]
 	memcpy(receive+indx, buff, 1);
- 8000508:	4b0e      	ldr	r3, [pc, #56]	; (8000544 <HAL_UART_RxCpltCallback+0x44>)
- 800050a:	781b      	ldrb	r3, [r3, #0]
- 800050c:	461a      	mov	r2, r3
- 800050e:	4b0e      	ldr	r3, [pc, #56]	; (8000548 <HAL_UART_RxCpltCallback+0x48>)
- 8000510:	4413      	add	r3, r2
- 8000512:	4a0e      	ldr	r2, [pc, #56]	; (800054c <HAL_UART_RxCpltCallback+0x4c>)
- 8000514:	7812      	ldrb	r2, [r2, #0]
- 8000516:	701a      	strb	r2, [r3, #0]
+ 80004d8:	4b0e      	ldr	r3, [pc, #56]	; (8000514 <HAL_UART_RxCpltCallback+0x44>)
+ 80004da:	781b      	ldrb	r3, [r3, #0]
+ 80004dc:	461a      	mov	r2, r3
+ 80004de:	4b0e      	ldr	r3, [pc, #56]	; (8000518 <HAL_UART_RxCpltCallback+0x48>)
+ 80004e0:	4413      	add	r3, r2
+ 80004e2:	4a0e      	ldr	r2, [pc, #56]	; (800051c <HAL_UART_RxCpltCallback+0x4c>)
+ 80004e4:	7812      	ldrb	r2, [r2, #0]
+ 80004e6:	701a      	strb	r2, [r3, #0]
 	if(++indx >= 9){
- 8000518:	4b0a      	ldr	r3, [pc, #40]	; (8000544 <HAL_UART_RxCpltCallback+0x44>)
- 800051a:	781b      	ldrb	r3, [r3, #0]
- 800051c:	3301      	adds	r3, #1
- 800051e:	b2da      	uxtb	r2, r3
- 8000520:	4b08      	ldr	r3, [pc, #32]	; (8000544 <HAL_UART_RxCpltCallback+0x44>)
- 8000522:	701a      	strb	r2, [r3, #0]
- 8000524:	4b07      	ldr	r3, [pc, #28]	; (8000544 <HAL_UART_RxCpltCallback+0x44>)
- 8000526:	781b      	ldrb	r3, [r3, #0]
- 8000528:	2b08      	cmp	r3, #8
- 800052a:	d902      	bls.n	8000532 <HAL_UART_RxCpltCallback+0x32>
+ 80004e8:	4b0a      	ldr	r3, [pc, #40]	; (8000514 <HAL_UART_RxCpltCallback+0x44>)
+ 80004ea:	781b      	ldrb	r3, [r3, #0]
+ 80004ec:	3301      	adds	r3, #1
+ 80004ee:	b2da      	uxtb	r2, r3
+ 80004f0:	4b08      	ldr	r3, [pc, #32]	; (8000514 <HAL_UART_RxCpltCallback+0x44>)
+ 80004f2:	701a      	strb	r2, [r3, #0]
+ 80004f4:	4b07      	ldr	r3, [pc, #28]	; (8000514 <HAL_UART_RxCpltCallback+0x44>)
+ 80004f6:	781b      	ldrb	r3, [r3, #0]
+ 80004f8:	2b08      	cmp	r3, #8
+ 80004fa:	d902      	bls.n	8000502 <HAL_UART_RxCpltCallback+0x32>
 		indx = 0;
- 800052c:	4b05      	ldr	r3, [pc, #20]	; (8000544 <HAL_UART_RxCpltCallback+0x44>)
- 800052e:	2200      	movs	r2, #0
- 8000530:	701a      	strb	r2, [r3, #0]
+ 80004fc:	4b05      	ldr	r3, [pc, #20]	; (8000514 <HAL_UART_RxCpltCallback+0x44>)
+ 80004fe:	2200      	movs	r2, #0
+ 8000500:	701a      	strb	r2, [r3, #0]
 	}
 	HAL_UART_Receive_IT(huart, buff, 1);
- 8000532:	2201      	movs	r2, #1
- 8000534:	4905      	ldr	r1, [pc, #20]	; (800054c <HAL_UART_RxCpltCallback+0x4c>)
- 8000536:	6878      	ldr	r0, [r7, #4]
- 8000538:	f002 f958 	bl	80027ec <HAL_UART_Receive_IT>
+ 8000502:	2201      	movs	r2, #1
+ 8000504:	4905      	ldr	r1, [pc, #20]	; (800051c <HAL_UART_RxCpltCallback+0x4c>)
+ 8000506:	6878      	ldr	r0, [r7, #4]
+ 8000508:	f002 f970 	bl	80027ec <HAL_UART_Receive_IT>
 }
- 800053c:	bf00      	nop
- 800053e:	3708      	adds	r7, #8
- 8000540:	46bd      	mov	sp, r7
- 8000542:	bd80      	pop	{r7, pc}
- 8000544:	20000042 	.word	0x20000042
- 8000548:	20000034 	.word	0x20000034
- 800054c:	20000040 	.word	0x20000040
+ 800050c:	bf00      	nop
+ 800050e:	3708      	adds	r7, #8
+ 8000510:	46bd      	mov	sp, r7
+ 8000512:	bd80      	pop	{r7, pc}
+ 8000514:	20000042 	.word	0x20000042
+ 8000518:	20000034 	.word	0x20000034
+ 800051c:	20000040 	.word	0x20000040
 
-08000550 <CRC_calc>:
+08000520 <CRC_calc>:
 
 uint8_t CRC_calc(uint8_t length){
- 8000550:	b480      	push	{r7}
- 8000552:	b085      	sub	sp, #20
- 8000554:	af00      	add	r7, sp, #0
- 8000556:	4603      	mov	r3, r0
- 8000558:	71fb      	strb	r3, [r7, #7]
+ 8000520:	b480      	push	{r7}
+ 8000522:	b085      	sub	sp, #20
+ 8000524:	af00      	add	r7, sp, #0
+ 8000526:	4603      	mov	r3, r0
+ 8000528:	71fb      	strb	r3, [r7, #7]
 	uint8_t sum = 0;
- 800055a:	2300      	movs	r3, #0
- 800055c:	73fb      	strb	r3, [r7, #15]
+ 800052a:	2300      	movs	r3, #0
+ 800052c:	73fb      	strb	r3, [r7, #15]
 	for(int i = 0; i < length; i++){
- 800055e:	2300      	movs	r3, #0
- 8000560:	60bb      	str	r3, [r7, #8]
- 8000562:	e009      	b.n	8000578 <CRC_calc+0x28>
+ 800052e:	2300      	movs	r3, #0
+ 8000530:	60bb      	str	r3, [r7, #8]
+ 8000532:	e009      	b.n	8000548 <CRC_calc+0x28>
 		sum += transmit[i];
- 8000564:	4a0a      	ldr	r2, [pc, #40]	; (8000590 <CRC_calc+0x40>)
- 8000566:	68bb      	ldr	r3, [r7, #8]
- 8000568:	4413      	add	r3, r2
- 800056a:	781a      	ldrb	r2, [r3, #0]
- 800056c:	7bfb      	ldrb	r3, [r7, #15]
- 800056e:	4413      	add	r3, r2
- 8000570:	73fb      	strb	r3, [r7, #15]
+ 8000534:	4a0a      	ldr	r2, [pc, #40]	; (8000560 <CRC_calc+0x40>)
+ 8000536:	68bb      	ldr	r3, [r7, #8]
+ 8000538:	4413      	add	r3, r2
+ 800053a:	781a      	ldrb	r2, [r3, #0]
+ 800053c:	7bfb      	ldrb	r3, [r7, #15]
+ 800053e:	4413      	add	r3, r2
+ 8000540:	73fb      	strb	r3, [r7, #15]
 	for(int i = 0; i < length; i++){
- 8000572:	68bb      	ldr	r3, [r7, #8]
- 8000574:	3301      	adds	r3, #1
- 8000576:	60bb      	str	r3, [r7, #8]
- 8000578:	79fb      	ldrb	r3, [r7, #7]
- 800057a:	68ba      	ldr	r2, [r7, #8]
- 800057c:	429a      	cmp	r2, r3
- 800057e:	dbf1      	blt.n	8000564 <CRC_calc+0x14>
+ 8000542:	68bb      	ldr	r3, [r7, #8]
+ 8000544:	3301      	adds	r3, #1
+ 8000546:	60bb      	str	r3, [r7, #8]
+ 8000548:	79fb      	ldrb	r3, [r7, #7]
+ 800054a:	68ba      	ldr	r2, [r7, #8]
+ 800054c:	429a      	cmp	r2, r3
+ 800054e:	dbf1      	blt.n	8000534 <CRC_calc+0x14>
 	}
 	return sum;
- 8000580:	7bfb      	ldrb	r3, [r7, #15]
+ 8000550:	7bfb      	ldrb	r3, [r7, #15]
 }
- 8000582:	4618      	mov	r0, r3
- 8000584:	3714      	adds	r7, #20
- 8000586:	46bd      	mov	sp, r7
- 8000588:	f85d 7b04 	ldr.w	r7, [sp], #4
- 800058c:	4770      	bx	lr
- 800058e:	bf00      	nop
- 8000590:	2000002c 	.word	0x2000002c
+ 8000552:	4618      	mov	r0, r3
+ 8000554:	3714      	adds	r7, #20
+ 8000556:	46bd      	mov	sp, r7
+ 8000558:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 800055c:	4770      	bx	lr
+ 800055e:	bf00      	nop
+ 8000560:	2000002c 	.word	0x2000002c
 
-08000594 <MKS_read_param>:
+08000564 <MKS_read_param>:
 
 
 void MKS_read_param(uint8_t param, uint8_t length_of_param){
- 8000594:	b580      	push	{r7, lr}
- 8000596:	b082      	sub	sp, #8
- 8000598:	af00      	add	r7, sp, #0
- 800059a:	4603      	mov	r3, r0
- 800059c:	460a      	mov	r2, r1
- 800059e:	71fb      	strb	r3, [r7, #7]
- 80005a0:	4613      	mov	r3, r2
- 80005a2:	71bb      	strb	r3, [r7, #6]
+ 8000564:	b580      	push	{r7, lr}
+ 8000566:	b082      	sub	sp, #8
+ 8000568:	af00      	add	r7, sp, #0
+ 800056a:	4603      	mov	r3, r0
+ 800056c:	460a      	mov	r2, r1
+ 800056e:	71fb      	strb	r3, [r7, #7]
+ 8000570:	4613      	mov	r3, r2
+ 8000572:	71bb      	strb	r3, [r7, #6]
 	transmit[0] = Address;
- 80005a4:	4b15      	ldr	r3, [pc, #84]	; (80005fc <MKS_read_param+0x68>)
- 80005a6:	22e0      	movs	r2, #224	; 0xe0
- 80005a8:	701a      	strb	r2, [r3, #0]
+ 8000574:	4b15      	ldr	r3, [pc, #84]	; (80005cc <MKS_read_param+0x68>)
+ 8000576:	22e0      	movs	r2, #224	; 0xe0
+ 8000578:	701a      	strb	r2, [r3, #0]
 	transmit[1] = param;
- 80005aa:	4a14      	ldr	r2, [pc, #80]	; (80005fc <MKS_read_param+0x68>)
- 80005ac:	79fb      	ldrb	r3, [r7, #7]
- 80005ae:	7053      	strb	r3, [r2, #1]
+ 800057a:	4a14      	ldr	r2, [pc, #80]	; (80005cc <MKS_read_param+0x68>)
+ 800057c:	79fb      	ldrb	r3, [r7, #7]
+ 800057e:	7053      	strb	r3, [r2, #1]
 	transmit[2] = CRC_calc(2);
- 80005b0:	2002      	movs	r0, #2
- 80005b2:	f7ff ffcd 	bl	8000550 <CRC_calc>
- 80005b6:	4603      	mov	r3, r0
- 80005b8:	461a      	mov	r2, r3
- 80005ba:	4b10      	ldr	r3, [pc, #64]	; (80005fc <MKS_read_param+0x68>)
- 80005bc:	709a      	strb	r2, [r3, #2]
+ 8000580:	2002      	movs	r0, #2
+ 8000582:	f7ff ffcd 	bl	8000520 <CRC_calc>
+ 8000586:	4603      	mov	r3, r0
+ 8000588:	461a      	mov	r2, r3
+ 800058a:	4b10      	ldr	r3, [pc, #64]	; (80005cc <MKS_read_param+0x68>)
+ 800058c:	709a      	strb	r2, [r3, #2]
 	is_uart_busy = true;
- 80005be:	4b10      	ldr	r3, [pc, #64]	; (8000600 <MKS_read_param+0x6c>)
- 80005c0:	2201      	movs	r2, #1
- 80005c2:	701a      	strb	r2, [r3, #0]
+ 800058e:	4b10      	ldr	r3, [pc, #64]	; (80005d0 <MKS_read_param+0x6c>)
+ 8000590:	2201      	movs	r2, #1
+ 8000592:	701a      	strb	r2, [r3, #0]
 	HAL_UART_Transmit_IT(&huart1, transmit, 3);
- 80005c4:	2203      	movs	r2, #3
- 80005c6:	490d      	ldr	r1, [pc, #52]	; (80005fc <MKS_read_param+0x68>)
- 80005c8:	480e      	ldr	r0, [pc, #56]	; (8000604 <MKS_read_param+0x70>)
- 80005ca:	f002 f8a1 	bl	8002710 <HAL_UART_Transmit_IT>
+ 8000594:	2203      	movs	r2, #3
+ 8000596:	490d      	ldr	r1, [pc, #52]	; (80005cc <MKS_read_param+0x68>)
+ 8000598:	480e      	ldr	r0, [pc, #56]	; (80005d4 <MKS_read_param+0x70>)
+ 800059a:	f002 f8b9 	bl	8002710 <HAL_UART_Transmit_IT>
 	do{
 		if(indx > length_of_param){
- 80005ce:	4b0e      	ldr	r3, [pc, #56]	; (8000608 <MKS_read_param+0x74>)
- 80005d0:	781b      	ldrb	r3, [r3, #0]
- 80005d2:	79ba      	ldrb	r2, [r7, #6]
- 80005d4:	429a      	cmp	r2, r3
- 80005d6:	d305      	bcc.n	80005e4 <MKS_read_param+0x50>
+ 800059e:	4b0e      	ldr	r3, [pc, #56]	; (80005d8 <MKS_read_param+0x74>)
+ 80005a0:	781b      	ldrb	r3, [r3, #0]
+ 80005a2:	79ba      	ldrb	r2, [r7, #6]
+ 80005a4:	429a      	cmp	r2, r3
+ 80005a6:	d305      	bcc.n	80005b4 <MKS_read_param+0x50>
 			break;
 		}
 	}while(indx != length_of_param);
- 80005d8:	4b0b      	ldr	r3, [pc, #44]	; (8000608 <MKS_read_param+0x74>)
- 80005da:	781b      	ldrb	r3, [r3, #0]
- 80005dc:	79ba      	ldrb	r2, [r7, #6]
- 80005de:	429a      	cmp	r2, r3
- 80005e0:	d1f5      	bne.n	80005ce <MKS_read_param+0x3a>
- 80005e2:	e000      	b.n	80005e6 <MKS_read_param+0x52>
+ 80005a8:	4b0b      	ldr	r3, [pc, #44]	; (80005d8 <MKS_read_param+0x74>)
+ 80005aa:	781b      	ldrb	r3, [r3, #0]
+ 80005ac:	79ba      	ldrb	r2, [r7, #6]
+ 80005ae:	429a      	cmp	r2, r3
+ 80005b0:	d1f5      	bne.n	800059e <MKS_read_param+0x3a>
+ 80005b2:	e000      	b.n	80005b6 <MKS_read_param+0x52>
 			break;
- 80005e4:	bf00      	nop
+ 80005b4:	bf00      	nop
 	indx = 0;
- 80005e6:	4b08      	ldr	r3, [pc, #32]	; (8000608 <MKS_read_param+0x74>)
- 80005e8:	2200      	movs	r2, #0
- 80005ea:	701a      	strb	r2, [r3, #0]
+ 80005b6:	4b08      	ldr	r3, [pc, #32]	; (80005d8 <MKS_read_param+0x74>)
+ 80005b8:	2200      	movs	r2, #0
+ 80005ba:	701a      	strb	r2, [r3, #0]
 	is_uart_busy = false;
- 80005ec:	4b04      	ldr	r3, [pc, #16]	; (8000600 <MKS_read_param+0x6c>)
- 80005ee:	2200      	movs	r2, #0
- 80005f0:	701a      	strb	r2, [r3, #0]
+ 80005bc:	4b04      	ldr	r3, [pc, #16]	; (80005d0 <MKS_read_param+0x6c>)
+ 80005be:	2200      	movs	r2, #0
+ 80005c0:	701a      	strb	r2, [r3, #0]
 }
- 80005f2:	bf00      	nop
- 80005f4:	3708      	adds	r7, #8
- 80005f6:	46bd      	mov	sp, r7
- 80005f8:	bd80      	pop	{r7, pc}
- 80005fa:	bf00      	nop
- 80005fc:	2000002c 	.word	0x2000002c
- 8000600:	20000029 	.word	0x20000029
- 8000604:	20000060 	.word	0x20000060
- 8000608:	20000042 	.word	0x20000042
+ 80005c2:	bf00      	nop
+ 80005c4:	3708      	adds	r7, #8
+ 80005c6:	46bd      	mov	sp, r7
+ 80005c8:	bd80      	pop	{r7, pc}
+ 80005ca:	bf00      	nop
+ 80005cc:	2000002c 	.word	0x2000002c
+ 80005d0:	20000029 	.word	0x20000029
+ 80005d4:	20000060 	.word	0x20000060
+ 80005d8:	20000042 	.word	0x20000042
 
-0800060c <MKS_set_param>:
+080005dc <MKS_set_param>:
 
 
 void MKS_set_param(uint8_t param, uint8_t value){
- 800060c:	b580      	push	{r7, lr}
- 800060e:	b082      	sub	sp, #8
- 8000610:	af00      	add	r7, sp, #0
- 8000612:	4603      	mov	r3, r0
- 8000614:	460a      	mov	r2, r1
- 8000616:	71fb      	strb	r3, [r7, #7]
- 8000618:	4613      	mov	r3, r2
- 800061a:	71bb      	strb	r3, [r7, #6]
+ 80005dc:	b580      	push	{r7, lr}
+ 80005de:	b082      	sub	sp, #8
+ 80005e0:	af00      	add	r7, sp, #0
+ 80005e2:	4603      	mov	r3, r0
+ 80005e4:	460a      	mov	r2, r1
+ 80005e6:	71fb      	strb	r3, [r7, #7]
+ 80005e8:	4613      	mov	r3, r2
+ 80005ea:	71bb      	strb	r3, [r7, #6]
 	transmit[0] = Address;
- 800061c:	4b15      	ldr	r3, [pc, #84]	; (8000674 <MKS_set_param+0x68>)
- 800061e:	22e0      	movs	r2, #224	; 0xe0
- 8000620:	701a      	strb	r2, [r3, #0]
+ 80005ec:	4b15      	ldr	r3, [pc, #84]	; (8000644 <MKS_set_param+0x68>)
+ 80005ee:	22e0      	movs	r2, #224	; 0xe0
+ 80005f0:	701a      	strb	r2, [r3, #0]
 	transmit[1] = param;
- 8000622:	4a14      	ldr	r2, [pc, #80]	; (8000674 <MKS_set_param+0x68>)
- 8000624:	79fb      	ldrb	r3, [r7, #7]
- 8000626:	7053      	strb	r3, [r2, #1]
+ 80005f2:	4a14      	ldr	r2, [pc, #80]	; (8000644 <MKS_set_param+0x68>)
+ 80005f4:	79fb      	ldrb	r3, [r7, #7]
+ 80005f6:	7053      	strb	r3, [r2, #1]
 	transmit[2] = value;
- 8000628:	4a12      	ldr	r2, [pc, #72]	; (8000674 <MKS_set_param+0x68>)
- 800062a:	79bb      	ldrb	r3, [r7, #6]
- 800062c:	7093      	strb	r3, [r2, #2]
+ 80005f8:	4a12      	ldr	r2, [pc, #72]	; (8000644 <MKS_set_param+0x68>)
+ 80005fa:	79bb      	ldrb	r3, [r7, #6]
+ 80005fc:	7093      	strb	r3, [r2, #2]
 	transmit[3] = CRC_calc(3);
- 800062e:	2003      	movs	r0, #3
- 8000630:	f7ff ff8e 	bl	8000550 <CRC_calc>
- 8000634:	4603      	mov	r3, r0
- 8000636:	461a      	mov	r2, r3
- 8000638:	4b0e      	ldr	r3, [pc, #56]	; (8000674 <MKS_set_param+0x68>)
- 800063a:	70da      	strb	r2, [r3, #3]
+ 80005fe:	2003      	movs	r0, #3
+ 8000600:	f7ff ff8e 	bl	8000520 <CRC_calc>
+ 8000604:	4603      	mov	r3, r0
+ 8000606:	461a      	mov	r2, r3
+ 8000608:	4b0e      	ldr	r3, [pc, #56]	; (8000644 <MKS_set_param+0x68>)
+ 800060a:	70da      	strb	r2, [r3, #3]
 	is_uart_busy = true;
- 800063c:	4b0e      	ldr	r3, [pc, #56]	; (8000678 <MKS_set_param+0x6c>)
- 800063e:	2201      	movs	r2, #1
- 8000640:	701a      	strb	r2, [r3, #0]
+ 800060c:	4b0e      	ldr	r3, [pc, #56]	; (8000648 <MKS_set_param+0x6c>)
+ 800060e:	2201      	movs	r2, #1
+ 8000610:	701a      	strb	r2, [r3, #0]
 	HAL_UART_Transmit_IT(&huart1, transmit, 4);
- 8000642:	2204      	movs	r2, #4
- 8000644:	490b      	ldr	r1, [pc, #44]	; (8000674 <MKS_set_param+0x68>)
- 8000646:	480d      	ldr	r0, [pc, #52]	; (800067c <MKS_set_param+0x70>)
- 8000648:	f002 f862 	bl	8002710 <HAL_UART_Transmit_IT>
+ 8000612:	2204      	movs	r2, #4
+ 8000614:	490b      	ldr	r1, [pc, #44]	; (8000644 <MKS_set_param+0x68>)
+ 8000616:	480d      	ldr	r0, [pc, #52]	; (800064c <MKS_set_param+0x70>)
+ 8000618:	f002 f87a 	bl	8002710 <HAL_UART_Transmit_IT>
 	do{
 		if(indx > response_length){
- 800064c:	4b0c      	ldr	r3, [pc, #48]	; (8000680 <MKS_set_param+0x74>)
- 800064e:	781b      	ldrb	r3, [r3, #0]
- 8000650:	2b03      	cmp	r3, #3
- 8000652:	d804      	bhi.n	800065e <MKS_set_param+0x52>
+ 800061c:	4b0c      	ldr	r3, [pc, #48]	; (8000650 <MKS_set_param+0x74>)
+ 800061e:	781b      	ldrb	r3, [r3, #0]
+ 8000620:	2b03      	cmp	r3, #3
+ 8000622:	d804      	bhi.n	800062e <MKS_set_param+0x52>
 			break;
 		}
 	}while(indx != response_length);
- 8000654:	4b0a      	ldr	r3, [pc, #40]	; (8000680 <MKS_set_param+0x74>)
- 8000656:	781b      	ldrb	r3, [r3, #0]
- 8000658:	2b03      	cmp	r3, #3
- 800065a:	d1f7      	bne.n	800064c <MKS_set_param+0x40>
- 800065c:	e000      	b.n	8000660 <MKS_set_param+0x54>
+ 8000624:	4b0a      	ldr	r3, [pc, #40]	; (8000650 <MKS_set_param+0x74>)
+ 8000626:	781b      	ldrb	r3, [r3, #0]
+ 8000628:	2b03      	cmp	r3, #3
+ 800062a:	d1f7      	bne.n	800061c <MKS_set_param+0x40>
+ 800062c:	e000      	b.n	8000630 <MKS_set_param+0x54>
 			break;
- 800065e:	bf00      	nop
+ 800062e:	bf00      	nop
 	indx = 0;
- 8000660:	4b07      	ldr	r3, [pc, #28]	; (8000680 <MKS_set_param+0x74>)
- 8000662:	2200      	movs	r2, #0
- 8000664:	701a      	strb	r2, [r3, #0]
+ 8000630:	4b07      	ldr	r3, [pc, #28]	; (8000650 <MKS_set_param+0x74>)
+ 8000632:	2200      	movs	r2, #0
+ 8000634:	701a      	strb	r2, [r3, #0]
 	is_uart_busy = false;
- 8000666:	4b04      	ldr	r3, [pc, #16]	; (8000678 <MKS_set_param+0x6c>)
- 8000668:	2200      	movs	r2, #0
- 800066a:	701a      	strb	r2, [r3, #0]
+ 8000636:	4b04      	ldr	r3, [pc, #16]	; (8000648 <MKS_set_param+0x6c>)
+ 8000638:	2200      	movs	r2, #0
+ 800063a:	701a      	strb	r2, [r3, #0]
 }
- 800066c:	bf00      	nop
- 800066e:	3708      	adds	r7, #8
- 8000670:	46bd      	mov	sp, r7
- 8000672:	bd80      	pop	{r7, pc}
- 8000674:	2000002c 	.word	0x2000002c
- 8000678:	20000029 	.word	0x20000029
- 800067c:	20000060 	.word	0x20000060
- 8000680:	20000042 	.word	0x20000042
+ 800063c:	bf00      	nop
+ 800063e:	3708      	adds	r7, #8
+ 8000640:	46bd      	mov	sp, r7
+ 8000642:	bd80      	pop	{r7, pc}
+ 8000644:	2000002c 	.word	0x2000002c
+ 8000648:	20000029 	.word	0x20000029
+ 800064c:	20000060 	.word	0x20000060
+ 8000650:	20000042 	.word	0x20000042
 
-08000684 <MKS_set_rotation_speed>:
+08000654 <MKS_set_rotation_speed>:
 	}while(indx != response_length);
 	indx = 0;
 	is_uart_busy = false;
 }
 
 void MKS_set_rotation_speed(uint8_t speed, bool clockwise){
- 8000684:	b580      	push	{r7, lr}
- 8000686:	b082      	sub	sp, #8
- 8000688:	af00      	add	r7, sp, #0
- 800068a:	4603      	mov	r3, r0
- 800068c:	460a      	mov	r2, r1
- 800068e:	71fb      	strb	r3, [r7, #7]
- 8000690:	4613      	mov	r3, r2
- 8000692:	71bb      	strb	r3, [r7, #6]
+ 8000654:	b580      	push	{r7, lr}
+ 8000656:	b082      	sub	sp, #8
+ 8000658:	af00      	add	r7, sp, #0
+ 800065a:	4603      	mov	r3, r0
+ 800065c:	460a      	mov	r2, r1
+ 800065e:	71fb      	strb	r3, [r7, #7]
+ 8000660:	4613      	mov	r3, r2
+ 8000662:	71bb      	strb	r3, [r7, #6]
 	if(clockwise){
- 8000694:	79bb      	ldrb	r3, [r7, #6]
- 8000696:	2b00      	cmp	r3, #0
- 8000698:	d004      	beq.n	80006a4 <MKS_set_rotation_speed+0x20>
+ 8000664:	79bb      	ldrb	r3, [r7, #6]
+ 8000666:	2b00      	cmp	r3, #0
+ 8000668:	d004      	beq.n	8000674 <MKS_set_rotation_speed+0x20>
 		speed &= 0x7F;
- 800069a:	79fb      	ldrb	r3, [r7, #7]
- 800069c:	f003 037f 	and.w	r3, r3, #127	; 0x7f
- 80006a0:	71fb      	strb	r3, [r7, #7]
- 80006a2:	e003      	b.n	80006ac <MKS_set_rotation_speed+0x28>
+ 800066a:	79fb      	ldrb	r3, [r7, #7]
+ 800066c:	f003 037f 	and.w	r3, r3, #127	; 0x7f
+ 8000670:	71fb      	strb	r3, [r7, #7]
+ 8000672:	e003      	b.n	800067c <MKS_set_rotation_speed+0x28>
 	}else{
 		speed |= 0x80;
- 80006a4:	79fb      	ldrb	r3, [r7, #7]
- 80006a6:	f063 037f 	orn	r3, r3, #127	; 0x7f
- 80006aa:	71fb      	strb	r3, [r7, #7]
+ 8000674:	79fb      	ldrb	r3, [r7, #7]
+ 8000676:	f063 037f 	orn	r3, r3, #127	; 0x7f
+ 800067a:	71fb      	strb	r3, [r7, #7]
 	}
 	transmit[0] = Address;
- 80006ac:	4b15      	ldr	r3, [pc, #84]	; (8000704 <MKS_set_rotation_speed+0x80>)
- 80006ae:	22e0      	movs	r2, #224	; 0xe0
- 80006b0:	701a      	strb	r2, [r3, #0]
+ 800067c:	4b15      	ldr	r3, [pc, #84]	; (80006d4 <MKS_set_rotation_speed+0x80>)
+ 800067e:	22e0      	movs	r2, #224	; 0xe0
+ 8000680:	701a      	strb	r2, [r3, #0]
 	transmit[1] = Set_rotation;
- 80006b2:	4b14      	ldr	r3, [pc, #80]	; (8000704 <MKS_set_rotation_speed+0x80>)
- 80006b4:	22f6      	movs	r2, #246	; 0xf6
- 80006b6:	705a      	strb	r2, [r3, #1]
+ 8000682:	4b14      	ldr	r3, [pc, #80]	; (80006d4 <MKS_set_rotation_speed+0x80>)
+ 8000684:	22f6      	movs	r2, #246	; 0xf6
+ 8000686:	705a      	strb	r2, [r3, #1]
 	transmit[2] = (uint8_t)speed;
- 80006b8:	4a12      	ldr	r2, [pc, #72]	; (8000704 <MKS_set_rotation_speed+0x80>)
- 80006ba:	79fb      	ldrb	r3, [r7, #7]
- 80006bc:	7093      	strb	r3, [r2, #2]
+ 8000688:	4a12      	ldr	r2, [pc, #72]	; (80006d4 <MKS_set_rotation_speed+0x80>)
+ 800068a:	79fb      	ldrb	r3, [r7, #7]
+ 800068c:	7093      	strb	r3, [r2, #2]
 	transmit[3] = CRC_calc(3);
- 80006be:	2003      	movs	r0, #3
- 80006c0:	f7ff ff46 	bl	8000550 <CRC_calc>
- 80006c4:	4603      	mov	r3, r0
- 80006c6:	461a      	mov	r2, r3
- 80006c8:	4b0e      	ldr	r3, [pc, #56]	; (8000704 <MKS_set_rotation_speed+0x80>)
- 80006ca:	70da      	strb	r2, [r3, #3]
+ 800068e:	2003      	movs	r0, #3
+ 8000690:	f7ff ff46 	bl	8000520 <CRC_calc>
+ 8000694:	4603      	mov	r3, r0
+ 8000696:	461a      	mov	r2, r3
+ 8000698:	4b0e      	ldr	r3, [pc, #56]	; (80006d4 <MKS_set_rotation_speed+0x80>)
+ 800069a:	70da      	strb	r2, [r3, #3]
 	is_uart_busy = true;
- 80006cc:	4b0e      	ldr	r3, [pc, #56]	; (8000708 <MKS_set_rotation_speed+0x84>)
- 80006ce:	2201      	movs	r2, #1
- 80006d0:	701a      	strb	r2, [r3, #0]
+ 800069c:	4b0e      	ldr	r3, [pc, #56]	; (80006d8 <MKS_set_rotation_speed+0x84>)
+ 800069e:	2201      	movs	r2, #1
+ 80006a0:	701a      	strb	r2, [r3, #0]
 	HAL_UART_Transmit_IT(&huart1, transmit, 4);
- 80006d2:	2204      	movs	r2, #4
- 80006d4:	490b      	ldr	r1, [pc, #44]	; (8000704 <MKS_set_rotation_speed+0x80>)
- 80006d6:	480d      	ldr	r0, [pc, #52]	; (800070c <MKS_set_rotation_speed+0x88>)
- 80006d8:	f002 f81a 	bl	8002710 <HAL_UART_Transmit_IT>
+ 80006a2:	2204      	movs	r2, #4
+ 80006a4:	490b      	ldr	r1, [pc, #44]	; (80006d4 <MKS_set_rotation_speed+0x80>)
+ 80006a6:	480d      	ldr	r0, [pc, #52]	; (80006dc <MKS_set_rotation_speed+0x88>)
+ 80006a8:	f002 f832 	bl	8002710 <HAL_UART_Transmit_IT>
 	do{
 		if(indx > response_length){
- 80006dc:	4b0c      	ldr	r3, [pc, #48]	; (8000710 <MKS_set_rotation_speed+0x8c>)
- 80006de:	781b      	ldrb	r3, [r3, #0]
- 80006e0:	2b03      	cmp	r3, #3
- 80006e2:	d804      	bhi.n	80006ee <MKS_set_rotation_speed+0x6a>
+ 80006ac:	4b0c      	ldr	r3, [pc, #48]	; (80006e0 <MKS_set_rotation_speed+0x8c>)
+ 80006ae:	781b      	ldrb	r3, [r3, #0]
+ 80006b0:	2b03      	cmp	r3, #3
+ 80006b2:	d804      	bhi.n	80006be <MKS_set_rotation_speed+0x6a>
 			break;
 		}
 	}while(indx != response_length);
- 80006e4:	4b0a      	ldr	r3, [pc, #40]	; (8000710 <MKS_set_rotation_speed+0x8c>)
- 80006e6:	781b      	ldrb	r3, [r3, #0]
- 80006e8:	2b03      	cmp	r3, #3
- 80006ea:	d1f7      	bne.n	80006dc <MKS_set_rotation_speed+0x58>
- 80006ec:	e000      	b.n	80006f0 <MKS_set_rotation_speed+0x6c>
+ 80006b4:	4b0a      	ldr	r3, [pc, #40]	; (80006e0 <MKS_set_rotation_speed+0x8c>)
+ 80006b6:	781b      	ldrb	r3, [r3, #0]
+ 80006b8:	2b03      	cmp	r3, #3
+ 80006ba:	d1f7      	bne.n	80006ac <MKS_set_rotation_speed+0x58>
+ 80006bc:	e000      	b.n	80006c0 <MKS_set_rotation_speed+0x6c>
 			break;
- 80006ee:	bf00      	nop
+ 80006be:	bf00      	nop
 	indx = 0;
- 80006f0:	4b07      	ldr	r3, [pc, #28]	; (8000710 <MKS_set_rotation_speed+0x8c>)
- 80006f2:	2200      	movs	r2, #0
- 80006f4:	701a      	strb	r2, [r3, #0]
+ 80006c0:	4b07      	ldr	r3, [pc, #28]	; (80006e0 <MKS_set_rotation_speed+0x8c>)
+ 80006c2:	2200      	movs	r2, #0
+ 80006c4:	701a      	strb	r2, [r3, #0]
 	is_uart_busy = false;
- 80006f6:	4b04      	ldr	r3, [pc, #16]	; (8000708 <MKS_set_rotation_speed+0x84>)
- 80006f8:	2200      	movs	r2, #0
- 80006fa:	701a      	strb	r2, [r3, #0]
+ 80006c6:	4b04      	ldr	r3, [pc, #16]	; (80006d8 <MKS_set_rotation_speed+0x84>)
+ 80006c8:	2200      	movs	r2, #0
+ 80006ca:	701a      	strb	r2, [r3, #0]
 }
- 80006fc:	bf00      	nop
- 80006fe:	3708      	adds	r7, #8
- 8000700:	46bd      	mov	sp, r7
- 8000702:	bd80      	pop	{r7, pc}
- 8000704:	2000002c 	.word	0x2000002c
- 8000708:	20000029 	.word	0x20000029
- 800070c:	20000060 	.word	0x20000060
- 8000710:	20000042 	.word	0x20000042
+ 80006cc:	bf00      	nop
+ 80006ce:	3708      	adds	r7, #8
+ 80006d0:	46bd      	mov	sp, r7
+ 80006d2:	bd80      	pop	{r7, pc}
+ 80006d4:	2000002c 	.word	0x2000002c
+ 80006d8:	20000029 	.word	0x20000029
+ 80006dc:	20000060 	.word	0x20000060
+ 80006e0:	20000042 	.word	0x20000042
 
-08000714 <MKS_stop>:
+080006e4 <MKS_stop>:
 
 void MKS_stop(void){
- 8000714:	b580      	push	{r7, lr}
- 8000716:	af00      	add	r7, sp, #0
+ 80006e4:	b580      	push	{r7, lr}
+ 80006e6:	af00      	add	r7, sp, #0
 	transmit[0] = Address;
- 8000718:	4b13      	ldr	r3, [pc, #76]	; (8000768 <MKS_stop+0x54>)
- 800071a:	22e0      	movs	r2, #224	; 0xe0
- 800071c:	701a      	strb	r2, [r3, #0]
+ 80006e8:	4b13      	ldr	r3, [pc, #76]	; (8000738 <MKS_stop+0x54>)
+ 80006ea:	22e0      	movs	r2, #224	; 0xe0
+ 80006ec:	701a      	strb	r2, [r3, #0]
 	transmit[1] = Stop;
- 800071e:	4b12      	ldr	r3, [pc, #72]	; (8000768 <MKS_stop+0x54>)
- 8000720:	22f7      	movs	r2, #247	; 0xf7
- 8000722:	705a      	strb	r2, [r3, #1]
+ 80006ee:	4b12      	ldr	r3, [pc, #72]	; (8000738 <MKS_stop+0x54>)
+ 80006f0:	22f7      	movs	r2, #247	; 0xf7
+ 80006f2:	705a      	strb	r2, [r3, #1]
 	transmit[2] = CRC_calc(2);
- 8000724:	2002      	movs	r0, #2
- 8000726:	f7ff ff13 	bl	8000550 <CRC_calc>
- 800072a:	4603      	mov	r3, r0
- 800072c:	461a      	mov	r2, r3
- 800072e:	4b0e      	ldr	r3, [pc, #56]	; (8000768 <MKS_stop+0x54>)
- 8000730:	709a      	strb	r2, [r3, #2]
+ 80006f4:	2002      	movs	r0, #2
+ 80006f6:	f7ff ff13 	bl	8000520 <CRC_calc>
+ 80006fa:	4603      	mov	r3, r0
+ 80006fc:	461a      	mov	r2, r3
+ 80006fe:	4b0e      	ldr	r3, [pc, #56]	; (8000738 <MKS_stop+0x54>)
+ 8000700:	709a      	strb	r2, [r3, #2]
 	is_uart_busy = true;
- 8000732:	4b0e      	ldr	r3, [pc, #56]	; (800076c <MKS_stop+0x58>)
- 8000734:	2201      	movs	r2, #1
- 8000736:	701a      	strb	r2, [r3, #0]
+ 8000702:	4b0e      	ldr	r3, [pc, #56]	; (800073c <MKS_stop+0x58>)
+ 8000704:	2201      	movs	r2, #1
+ 8000706:	701a      	strb	r2, [r3, #0]
 	HAL_UART_Transmit_IT(&huart1, transmit, 3);
- 8000738:	2203      	movs	r2, #3
- 800073a:	490b      	ldr	r1, [pc, #44]	; (8000768 <MKS_stop+0x54>)
- 800073c:	480c      	ldr	r0, [pc, #48]	; (8000770 <MKS_stop+0x5c>)
- 800073e:	f001 ffe7 	bl	8002710 <HAL_UART_Transmit_IT>
+ 8000708:	2203      	movs	r2, #3
+ 800070a:	490b      	ldr	r1, [pc, #44]	; (8000738 <MKS_stop+0x54>)
+ 800070c:	480c      	ldr	r0, [pc, #48]	; (8000740 <MKS_stop+0x5c>)
+ 800070e:	f001 ffff 	bl	8002710 <HAL_UART_Transmit_IT>
 	do{
 		if(indx > response_length){
- 8000742:	4b0c      	ldr	r3, [pc, #48]	; (8000774 <MKS_stop+0x60>)
- 8000744:	781b      	ldrb	r3, [r3, #0]
- 8000746:	2b03      	cmp	r3, #3
- 8000748:	d804      	bhi.n	8000754 <MKS_stop+0x40>
+ 8000712:	4b0c      	ldr	r3, [pc, #48]	; (8000744 <MKS_stop+0x60>)
+ 8000714:	781b      	ldrb	r3, [r3, #0]
+ 8000716:	2b03      	cmp	r3, #3
+ 8000718:	d804      	bhi.n	8000724 <MKS_stop+0x40>
 			break;
 		}
 	}while(indx != response_length);
- 800074a:	4b0a      	ldr	r3, [pc, #40]	; (8000774 <MKS_stop+0x60>)
- 800074c:	781b      	ldrb	r3, [r3, #0]
- 800074e:	2b03      	cmp	r3, #3
- 8000750:	d1f7      	bne.n	8000742 <MKS_stop+0x2e>
- 8000752:	e000      	b.n	8000756 <MKS_stop+0x42>
+ 800071a:	4b0a      	ldr	r3, [pc, #40]	; (8000744 <MKS_stop+0x60>)
+ 800071c:	781b      	ldrb	r3, [r3, #0]
+ 800071e:	2b03      	cmp	r3, #3
+ 8000720:	d1f7      	bne.n	8000712 <MKS_stop+0x2e>
+ 8000722:	e000      	b.n	8000726 <MKS_stop+0x42>
 			break;
- 8000754:	bf00      	nop
+ 8000724:	bf00      	nop
 	indx = 0;
- 8000756:	4b07      	ldr	r3, [pc, #28]	; (8000774 <MKS_stop+0x60>)
- 8000758:	2200      	movs	r2, #0
- 800075a:	701a      	strb	r2, [r3, #0]
+ 8000726:	4b07      	ldr	r3, [pc, #28]	; (8000744 <MKS_stop+0x60>)
+ 8000728:	2200      	movs	r2, #0
+ 800072a:	701a      	strb	r2, [r3, #0]
 	is_uart_busy = false;
- 800075c:	4b03      	ldr	r3, [pc, #12]	; (800076c <MKS_stop+0x58>)
- 800075e:	2200      	movs	r2, #0
- 8000760:	701a      	strb	r2, [r3, #0]
+ 800072c:	4b03      	ldr	r3, [pc, #12]	; (800073c <MKS_stop+0x58>)
+ 800072e:	2200      	movs	r2, #0
+ 8000730:	701a      	strb	r2, [r3, #0]
 }
- 8000762:	bf00      	nop
- 8000764:	bd80      	pop	{r7, pc}
+ 8000732:	bf00      	nop
+ 8000734:	bd80      	pop	{r7, pc}
+ 8000736:	bf00      	nop
+ 8000738:	2000002c 	.word	0x2000002c
+ 800073c:	20000029 	.word	0x20000029
+ 8000740:	20000060 	.word	0x20000060
+ 8000744:	20000042 	.word	0x20000042
+
+08000748 <MX_GPIO_Init>:
+/* USER CODE END 1 */
+
+/** Pinout Configuration
+*/
+void MX_GPIO_Init(void)
+{
+ 8000748:	b480      	push	{r7}
+ 800074a:	b083      	sub	sp, #12
+ 800074c:	af00      	add	r7, sp, #0
+
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+ 800074e:	4b09      	ldr	r3, [pc, #36]	; (8000774 <MX_GPIO_Init+0x2c>)
+ 8000750:	6cdb      	ldr	r3, [r3, #76]	; 0x4c
+ 8000752:	4a08      	ldr	r2, [pc, #32]	; (8000774 <MX_GPIO_Init+0x2c>)
+ 8000754:	f043 0301 	orr.w	r3, r3, #1
+ 8000758:	64d3      	str	r3, [r2, #76]	; 0x4c
+ 800075a:	4b06      	ldr	r3, [pc, #24]	; (8000774 <MX_GPIO_Init+0x2c>)
+ 800075c:	6cdb      	ldr	r3, [r3, #76]	; 0x4c
+ 800075e:	f003 0301 	and.w	r3, r3, #1
+ 8000762:	607b      	str	r3, [r7, #4]
+ 8000764:	687b      	ldr	r3, [r7, #4]
+
+}
  8000766:	bf00      	nop
- 8000768:	2000002c 	.word	0x2000002c
- 800076c:	20000029 	.word	0x20000029
- 8000770:	20000060 	.word	0x20000060
- 8000774:	20000042 	.word	0x20000042
+ 8000768:	370c      	adds	r7, #12
+ 800076a:	46bd      	mov	sp, r7
+ 800076c:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8000770:	4770      	bx	lr
+ 8000772:	bf00      	nop
+ 8000774:	40021000 	.word	0x40021000
 
 08000778 <main>:
 /**
@@ -806,7 +806,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
- 8000784:	f7ff fea4 	bl	80004d0 <MX_GPIO_Init>
+ 8000784:	f7ff ffe0 	bl	8000748 <MX_GPIO_Init>
   MX_USART1_UART_Init();
  8000788:	f000 f9a4 	bl	8000ad4 <MX_USART1_UART_Init>
   /* USER CODE BEGIN 2 */
@@ -833,12 +833,12 @@ int main(void)
   MKS_set_param(0x90, 0x02);
  80007ae:	2102      	movs	r1, #2
  80007b0:	2090      	movs	r0, #144	; 0x90
- 80007b2:	f7ff ff2b 	bl	800060c <MKS_set_param>
+ 80007b2:	f7ff ff13 	bl	80005dc <MKS_set_param>
 
   MKS_set_param(Enable_move, 0x01);
  80007b6:	2101      	movs	r1, #1
  80007b8:	20f3      	movs	r0, #243	; 0xf3
- 80007ba:	f7ff ff27 	bl	800060c <MKS_set_param>
+ 80007ba:	f7ff ff0f 	bl	80005dc <MKS_set_param>
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -861,12 +861,12 @@ int main(void)
  80007d4:	781b      	ldrb	r3, [r3, #0]
  80007d6:	4619      	mov	r1, r3
  80007d8:	200a      	movs	r0, #10
- 80007da:	f7ff ff53 	bl	8000684 <MKS_set_rotation_speed>
+ 80007da:	f7ff ff3b 	bl	8000654 <MKS_set_rotation_speed>
 	  }
 	  MKS_read_param(Position_angle, Position_angle_length);
  80007de:	2106      	movs	r1, #6
  80007e0:	2036      	movs	r0, #54	; 0x36
- 80007e2:	f7ff fed7 	bl	8000594 <MKS_read_param>
+ 80007e2:	f7ff febf 	bl	8000564 <MKS_read_param>
 	  read_rotation = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
  80007e6:	4b50      	ldr	r3, [pc, #320]	; (8000928 <main+0x1b0>)
  80007e8:	785b      	ldrb	r3, [r3, #1]
@@ -896,7 +896,7 @@ int main(void)
 	  MKS_read_param(Position_error, Position_error_length);
  8000820:	2104      	movs	r1, #4
  8000822:	2039      	movs	r0, #57	; 0x39
- 8000824:	f7ff feb6 	bl	8000594 <MKS_read_param>
+ 8000824:	f7ff fe9e 	bl	8000564 <MKS_read_param>
 	  read_error = (int16_t)((receive[1] << 8) + (receive[2]));
  8000828:	4b3f      	ldr	r3, [pc, #252]	; (8000928 <main+0x1b0>)
  800082a:	785b      	ldrb	r3, [r3, #1]
@@ -923,7 +923,7 @@ int main(void)
 	  MKS_read_param(En_value, En_value_length);
  800085e:	2108      	movs	r1, #8
  8000860:	2030      	movs	r0, #48	; 0x30
- 8000862:	f7ff fe97 	bl	8000594 <MKS_read_param>
+ 8000862:	f7ff fe7f 	bl	8000564 <MKS_read_param>
 	  HAL_Delay(10);
  8000866:	200a      	movs	r0, #10
  8000868:	f000 fa62 	bl	8000d30 <HAL_Delay>
@@ -976,7 +976,7 @@ int main(void)
  80008c8:	2201      	movs	r2, #1
  80008ca:	701a      	strb	r2, [r3, #0]
 		  MKS_stop();
- 80008cc:	f7ff ff22 	bl	8000714 <MKS_stop>
+ 80008cc:	f7ff ff0a 	bl	80006e4 <MKS_stop>
 	  }
 	  if(encoder_rotations <= -1){
  80008d0:	4b1a      	ldr	r3, [pc, #104]	; (800093c <main+0x1c4>)
@@ -988,7 +988,7 @@ int main(void)
  80008da:	2200      	movs	r2, #0
  80008dc:	701a      	strb	r2, [r3, #0]
 		  MKS_stop();
- 80008de:	f7ff ff19 	bl	8000714 <MKS_stop>
+ 80008de:	f7ff ff01 	bl	80006e4 <MKS_stop>
 	  }
 	  if(read_rotation > 800000 || read_rotation < -800000){
  80008e2:	4b0e      	ldr	r3, [pc, #56]	; (800091c <main+0x1a4>)
@@ -1002,11 +1002,11 @@ int main(void)
  80008f2:	4293      	cmp	r3, r2
  80008f4:	f6bf af63 	bge.w	80007be <main+0x46>
 		  MKS_stop();
- 80008f8:	f7ff ff0c 	bl	8000714 <MKS_stop>
+ 80008f8:	f7ff fef4 	bl	80006e4 <MKS_stop>
 		  MKS_set_param(Enable_move, 0);
  80008fc:	2100      	movs	r1, #0
  80008fe:	20f3      	movs	r0, #243	; 0xf3
- 8000900:	f7ff fe84 	bl	800060c <MKS_set_param>
+ 8000900:	f7ff fe6c 	bl	80005dc <MKS_set_param>
 	  if(read_rotation < 400000 && read_rotation > -400000){
  8000904:	e75b      	b.n	80007be <main+0x46>
  8000906:	bf00      	nop
@@ -9994,7 +9994,7 @@ static void UART_RxISR_8BIT(UART_HandleTypeDef *huart)
  8003be0:	e00d      	b.n	8003bfe <UART_RxISR_8BIT+0x158>
         HAL_UART_RxCpltCallback(huart);
  8003be2:	6878      	ldr	r0, [r7, #4]
- 8003be4:	f7fc fc8c 	bl	8000500 <HAL_UART_RxCpltCallback>
+ 8003be4:	f7fc fc74 	bl	80004d0 <HAL_UART_RxCpltCallback>
 }
  8003be8:	e009      	b.n	8003bfe <UART_RxISR_8BIT+0x158>
     __HAL_UART_SEND_REQ(huart, UART_RXDATA_FLUSH_REQUEST);
@@ -10228,7 +10228,7 @@ static void UART_RxISR_16BIT(UART_HandleTypeDef *huart)
  8003d40:	e00d      	b.n	8003d5e <UART_RxISR_16BIT+0x158>
         HAL_UART_RxCpltCallback(huart);
  8003d42:	6878      	ldr	r0, [r7, #4]
- 8003d44:	f7fc fbdc 	bl	8000500 <HAL_UART_RxCpltCallback>
+ 8003d44:	f7fc fbc4 	bl	80004d0 <HAL_UART_RxCpltCallback>
 }
  8003d48:	e009      	b.n	8003d5e <UART_RxISR_16BIT+0x158>
     __HAL_UART_SEND_REQ(huart, UART_RXDATA_FLUSH_REQUEST);

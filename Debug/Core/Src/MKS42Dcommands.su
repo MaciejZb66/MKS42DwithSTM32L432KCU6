@@ -1,0 +1,7 @@
+../Core/Src/MKS42Dcommands.c:25:6:HAL_UART_RxCpltCallback	16	static
+../Core/Src/MKS42Dcommands.c:33:9:CRC_calc	24	static
+../Core/Src/MKS42Dcommands.c:42:6:MKS_read_param	16	static
+../Core/Src/MKS42Dcommands.c:58:6:MKS_set_param	16	static
+../Core/Src/MKS42Dcommands.c:74:6:MKS_rotate	24	static
+../Core/Src/MKS42Dcommands.c:101:6:MKS_set_rotation_speed	16	static
+../Core/Src/MKS42Dcommands.c:122:6:MKS_stop	8	static

@@ -31,7 +31,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "MKS42Dcommands.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
