@@ -71,6 +71,7 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 bool flag;
+bool is_uart_busy;
 uint8_t tester;
 uint8_t transmit[8];
 uint8_t receive[9];
@@ -105,6 +106,7 @@ void MKS_read_param(uint8_t param, uint8_t length_of_param){
 	transmit[0] = Address;
 	transmit[1] = param;
 	transmit[2] = CRC_calc(2);
+	is_uart_busy = true;
 	HAL_UART_Transmit_IT(&huart1, transmit, 3);
 	do{
 		if(indx > length_of_param){
@@ -112,24 +114,16 @@ void MKS_read_param(uint8_t param, uint8_t length_of_param){
 		}
 	}while(indx != length_of_param);
 	indx = 0;
-	//HAL_UART_Receive_IT(&huart1, receive, length_of_param);
+	is_uart_busy = false;
 }
 
-//void MKS_check_read_param(uint8_t param, uint8_t length_of_param){
-//	transmit[0] = Address;
-//	transmit[1] = param;
-//	transmit[2] = CRC_calc(2);
-//	do{
-//		HAL_UART_Transmit_IT(&huart1, transmit, 3);
-//		HAL_UART_Receive_IT(&huart1, receive, length_of_param);
-//	}while(receive[length_of_param] != CRC_calc(length_of_param));
-//}
 
 void MKS_set_param(uint8_t param, uint8_t value){
 	transmit[0] = Address;
 	transmit[1] = param;
 	transmit[2] = value;
 	transmit[3] = CRC_calc(3);
+	is_uart_busy = true;
 	HAL_UART_Transmit_IT(&huart1, transmit, 4);
 	do{
 		if(indx > response_length){
@@ -137,7 +131,7 @@ void MKS_set_param(uint8_t param, uint8_t value){
 		}
 	}while(indx != response_length);
 	indx = 0;
-	//HAL_UART_Receive_IT(&huart1, receive, 3);
+	is_uart_busy = false;
 }
 
 void MKS_rotate(uint16_t rot, uint8_t speed, bool clockwise){
@@ -156,6 +150,7 @@ void MKS_rotate(uint16_t rot, uint8_t speed, bool clockwise){
 	transmit[5] = (uint8_t)(pulses >> 8);
 	transmit[6] = (uint8_t)(pulses);
 	transmit[7] = CRC_calc(7);
+	is_uart_busy = true;
 	HAL_UART_Transmit_IT(&huart1, transmit, 8);
 	do{
 		if(indx > response_length){
@@ -163,7 +158,7 @@ void MKS_rotate(uint16_t rot, uint8_t speed, bool clockwise){
 		}
 	}while(indx != response_length);
 	indx = 0;
-	//HAL_UART_Receive_IT(&huart1, receive, 3);
+	is_uart_busy = false;
 }
 
 void MKS_set_rotation_speed(uint8_t speed, bool clockwise){
@@ -176,6 +171,7 @@ void MKS_set_rotation_speed(uint8_t speed, bool clockwise){
 	transmit[1] = Set_rotation;
 	transmit[2] = (uint8_t)speed;
 	transmit[3] = CRC_calc(3);
+	is_uart_busy = true;
 	HAL_UART_Transmit_IT(&huart1, transmit, 4);
 	do{
 		if(indx > response_length){
@@ -183,12 +179,14 @@ void MKS_set_rotation_speed(uint8_t speed, bool clockwise){
 		}
 	}while(indx != response_length);
 	indx = 0;
+	is_uart_busy = false;
 }
 
 void MKS_stop(void){
 	transmit[0] = Address;
 	transmit[1] = Stop;
 	transmit[2] = CRC_calc(2);
+	is_uart_busy = true;
 	HAL_UART_Transmit_IT(&huart1, transmit, 3);
 	do{
 		if(indx > response_length){
@@ -196,7 +194,7 @@ void MKS_stop(void){
 		}
 	}while(indx != response_length);
 	indx = 0;
-	//HAL_UART_Receive_IT(&huart1, receive, 3);
+	is_uart_busy = false;
 }
 /* USER CODE END 0 */
 
@@ -232,6 +230,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_UART_Init(&huart1);
   flag = true;
+  is_uart_busy = false;
   indx = 0;
   HAL_UART_Receive_IT(&huart1, buff, 1);
   MKS_set_param(0x90, 0x02);
@@ -248,28 +247,16 @@ int main(void)
 		  MKS_set_rotation_speed(10, flag);
 	  }
 	  MKS_read_param(Position_angle, Position_angle_length);
-	  //MKS_read_param(Position_angle, Position_angle_length);
 	  read_rotation = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
 	  angle = (float)(read_rotation)/(encoder_quality/one_rotation_in_degrees);
 	  MKS_read_param(Position_error, Position_error_length);
-	  //MKS_read_param(Position_error, Position_error_length);
 	  read_error = (int16_t)((receive[1] << 8) + (receive[2]));
 	  angle_err = (float)(read_error)/(encoder_quality/one_rotation_in_degrees);
 	  MKS_read_param(En_value, En_value_length);
 	  HAL_Delay(10);
-	  //MKS_read_param(En_value, En_value_length);
 	  encoder_rotations = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
 	  encoder_value = (uint16_t)((receive[5] << 8) + receive[6]);
 	  angle_en = (float)(encoder_value)/(encoder_quality/one_rotation_in_degrees);
-	  tester = 0;
-
-//	  if(angle > 10){
-//		  flag = true;
-//	  }
-//	  if(angle < -180){
-//		  flag = false;
-//	  }
-
 	  if(encoder_rotations >= 1){
 		  flag = true;
 		  MKS_stop();
