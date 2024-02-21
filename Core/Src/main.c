@@ -36,7 +36,7 @@
 /* USER CODE BEGIN PD */
 #define Address 0xE0
 #define En_value 0x30
-#define En_value_length 9
+#define En_value_length 8
 #define Position_angle 0x36
 #define Position_angle_length 6
 #define Position_error 0x39
@@ -73,7 +73,7 @@ void SystemClock_Config(void);
 bool flag;
 uint8_t tester;
 uint8_t transmit[8];
-uint8_t receive[8];
+uint8_t receive[9];
 uint8_t buff[2];
 uint8_t indx;
 uint16_t encoder_value = 0;
@@ -86,7 +86,7 @@ float angle_err = 0;
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 	memcpy(receive+indx, buff, 1);
-	if(++indx >= 8){
+	if(++indx >= 9){
 		indx = 0;
 	}
 	HAL_UART_Receive_IT(huart, buff, 1);
@@ -110,10 +110,9 @@ void MKS_read_param(uint8_t param, uint8_t length_of_param){
 		if(indx > length_of_param){
 			break;
 		}
-	}while(indx != length_of_param - 1);
+	}while(indx != length_of_param);
 	indx = 0;
 	//HAL_UART_Receive_IT(&huart1, receive, length_of_param);
-	HAL_Delay(10);
 }
 
 //void MKS_check_read_param(uint8_t param, uint8_t length_of_param){
@@ -162,7 +161,7 @@ void MKS_rotate(uint16_t rot, uint8_t speed, bool clockwise){
 		if(indx > response_length){
 			break;
 		}
-	}while(indx != response_length - 1);
+	}while(indx != response_length);
 	indx = 0;
 	//HAL_UART_Receive_IT(&huart1, receive, 3);
 }
@@ -182,7 +181,7 @@ void MKS_set_rotation_speed(uint8_t speed, bool clockwise){
 		if(indx > response_length){
 			break;
 		}
-	}while(indx != response_length - 1);
+	}while(indx != response_length);
 	indx = 0;
 }
 
@@ -195,7 +194,7 @@ void MKS_stop(void){
 		if(indx > response_length){
 			break;
 		}
-	}while(indx != response_length - 1);
+	}while(indx != response_length);
 	indx = 0;
 	//HAL_UART_Receive_IT(&huart1, receive, 3);
 }
@@ -248,24 +247,21 @@ int main(void)
 		  //MKS_rotate(18, 15, flag);
 		  MKS_set_rotation_speed(10, flag);
 	  }
-	  HAL_Delay(100);
 	  MKS_read_param(Position_angle, Position_angle_length);
-	  MKS_read_param(Position_angle, Position_angle_length);
+	  //MKS_read_param(Position_angle, Position_angle_length);
 	  read_rotation = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
 	  angle = (float)(read_rotation)/(encoder_quality/one_rotation_in_degrees);
-	  HAL_Delay(10);
 	  MKS_read_param(Position_error, Position_error_length);
-	  MKS_read_param(Position_error, Position_error_length);
+	  //MKS_read_param(Position_error, Position_error_length);
 	  read_error = (int16_t)((receive[1] << 8) + (receive[2]));
 	  angle_err = (float)(read_error)/(encoder_quality/one_rotation_in_degrees);
+	  MKS_read_param(En_value, En_value_length);
 	  HAL_Delay(10);
-	  MKS_read_param(En_value, En_value_length);
-	  MKS_read_param(En_value, En_value_length);
+	  //MKS_read_param(En_value, En_value_length);
 	  encoder_rotations = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
 	  encoder_value = (uint16_t)((receive[5] << 8) + receive[6]);
 	  angle_en = (float)(encoder_value)/(encoder_quality/one_rotation_in_degrees);
 	  tester = 0;
-	  HAL_Delay(400);
 
 //	  if(angle > 10){
 //		  flag = true;
