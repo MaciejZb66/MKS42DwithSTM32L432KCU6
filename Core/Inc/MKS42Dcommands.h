@@ -11,6 +11,9 @@
 #include "usart.h"
 #include "string.h"
 
+//defines
+#define Used_UART &huart1
+
 //used defines
 #define Address 0xE0
 #define En_value 0x30
