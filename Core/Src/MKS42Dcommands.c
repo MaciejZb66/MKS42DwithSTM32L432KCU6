@@ -9,6 +9,8 @@
 
 bool flag;
 bool is_uart_busy;
+uint16_t one_full_rotation_pulses = (uint16_t)(one_rotation_in_degrees * motor_step / motor_type);
+uint8_t data_status;
 uint8_t receive_length = 0;
 uint8_t transmit[8];
 uint8_t receive[9];
@@ -129,6 +131,13 @@ void MKS_stop(void){
 			HAL_UART_Transmit_IT(Used_UART, transmit, 3);
 		}
 	}while(is_uart_busy == false);
-
 }
 
+struct Encoder MKS_get_encoder_value(void){
+	struct Encoder En;
+	MKS_read_param(En_value, En_value_length);
+	En.encoder_rotations = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
+	En.encoder_value = (uint16_t)((receive[5] << 8) + receive[6]);
+	En.encoder_angle = (float)(encoder_value)/(encoder_quality/one_rotation_in_degrees);
+	return En;
+}

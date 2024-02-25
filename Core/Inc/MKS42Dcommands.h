@@ -8,10 +8,11 @@
 //includes
 #include "stm32l4xx_hal.h"
 #include <stdbool.h>
+#include <stdint.h>
 #include "usart.h"
 #include "string.h"
 
-//defines
+//customizable defines
 #define Used_UART &huart1
 
 //used defines
@@ -27,16 +28,27 @@
 #define Stop 0xF7
 #define Rotate 0xFD
 #define response_length 3
-#define one_full_rotation_pulses 3200
+#define motor_step 16.0f
+#define motor_type 1.8f
 #define one_rotation_in_degrees 360.0f
 #define encoder_quality (float)(1<<16)
+//define enum type
+enum UART_status {
+	UART_ready = 0, UART_waiting = 1, UART_processing = 2
+};
 
-
+//used structs
+struct Encoder{
+	uint16_t encoder_value;
+	int32_t encoder_rotations;
+	float encoder_angle;
+};
 //prototypes of functions
-
 uint8_t CRC_calc(uint8_t length);
 void MKS_read_param(uint8_t param, uint8_t length_of_param);
 void MKS_set_param(uint8_t param, uint8_t value);
 void MKS_rotate(uint16_t rot, uint8_t speed, bool clockwise);
 void MKS_set_rotation_speed(uint8_t speed, bool clockwise);
 void MKS_stop(void);
+struct Encoder MKS_get_encoder_value(void);
+

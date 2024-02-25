@@ -1,7 +1,8 @@
-../Core/Src/MKS42Dcommands.c:25:6:HAL_UART_RxCpltCallback	16	static
-../Core/Src/MKS42Dcommands.c:38:9:CRC_calc	24	static
-../Core/Src/MKS42Dcommands.c:47:6:MKS_read_param	16	static
-../Core/Src/MKS42Dcommands.c:61:6:MKS_set_param	16	static
-../Core/Src/MKS42Dcommands.c:77:6:MKS_rotate	24	static
-../Core/Src/MKS42Dcommands.c:102:6:MKS_set_rotation_speed	16	static
-../Core/Src/MKS42Dcommands.c:121:6:MKS_stop	8	static
+../Core/Src/MKS42Dcommands.c:27:6:HAL_UART_RxCpltCallback	16	static
+../Core/Src/MKS42Dcommands.c:40:9:CRC_calc	24	static
+../Core/Src/MKS42Dcommands.c:49:6:MKS_read_param	16	static
+../Core/Src/MKS42Dcommands.c:63:6:MKS_set_param	16	static
+../Core/Src/MKS42Dcommands.c:79:6:MKS_rotate	24	static
+../Core/Src/MKS42Dcommands.c:104:6:MKS_set_rotation_speed	16	static
+../Core/Src/MKS42Dcommands.c:123:6:MKS_stop	8	static
+../Core/Src/MKS42Dcommands.c:136:16:MKS_get_encoder_value	40	static
