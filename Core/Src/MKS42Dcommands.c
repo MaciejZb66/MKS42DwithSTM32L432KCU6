@@ -46,6 +46,14 @@ uint8_t CRC_calc(uint8_t length){
 	return sum;
 }
 
+void MKS_init(void){
+	  HAL_UART_Init(&huart1);
+	  flag = true;
+	  indx = 0;
+	  HAL_UART_Receive_IT(&huart1, buff, 1);
+	  do{ }while(status != UART_ready);
+	  MKS_set_param(Enable_move, 0x01);
+}
 
 void MKS_read_param(uint8_t param, uint8_t length_of_param){
 	if(status == UART_ready){

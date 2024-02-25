@@ -50,6 +50,7 @@ struct Encoder{
 
 //prototypes of functions
 uint8_t CRC_calc(uint8_t length);
+void MKS_init(void);
 void MKS_read_param(uint8_t param, uint8_t length_of_param);
 void MKS_set_param(uint8_t param, uint8_t value);
 void MKS_rotate(uint16_t rot, uint8_t speed, bool clockwise);
