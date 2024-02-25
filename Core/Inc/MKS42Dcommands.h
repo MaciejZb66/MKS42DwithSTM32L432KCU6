@@ -12,6 +12,10 @@
 #include "usart.h"
 #include "string.h"
 
+/*
+ * WARNING! MKS servo 42D have open drain TX data line
+ * Add 2k resistor between 3v3 and MKS TX - STM RX data line
+*/
 //customizable defines
 #define Used_UART &huart1
 
@@ -34,7 +38,7 @@
 #define encoder_quality (float)(1<<16)
 //define enum type
 enum UART_status {
-	UART_ready = 0, UART_waiting = 1, UART_processing = 2
+	UART_ready = 0, UART_processing = 1, UART_busy = 2, UART_error = 3
 };
 
 //used structs
@@ -43,6 +47,7 @@ struct Encoder{
 	int32_t encoder_rotations;
 	float encoder_angle;
 };
+
 //prototypes of functions
 uint8_t CRC_calc(uint8_t length);
 void MKS_read_param(uint8_t param, uint8_t length_of_param);

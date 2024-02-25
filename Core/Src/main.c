@@ -57,7 +57,6 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 extern bool flag;
-extern bool is_uart_busy;
 extern uint8_t tester;
 extern uint8_t transmit[8];
 extern uint8_t receive[9];
@@ -104,7 +103,6 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_UART_Init(&huart1);
   flag = true;
-  is_uart_busy = false;
   indx = 0;
   HAL_UART_Receive_IT(&huart1, buff, 1);
   MKS_set_param(0x90, 0x02);
