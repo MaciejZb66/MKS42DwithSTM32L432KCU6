@@ -58,6 +58,7 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 extern bool flag;
+extern enum UART_status statuss;
 extern uint8_t tester;
 extern uint8_t transmit[8];
 extern uint8_t receive[9];
@@ -104,34 +105,38 @@ int main(void)
   MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
   MKS_init();
+  MKS_set_rotation_speed_F(10, true);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(read_rotation < 400000 && read_rotation > -400000){
-		  //MKS_rotate(18, 15, flag);
-		  MKS_set_rotation_speed_F(10, flag);
-	  }
-	  MKS_read_param_F(Position_angle, Position_angle_length);
-	  read_rotation = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
-	  angle = (float)(read_rotation)/(encoder_quality/one_rotation_in_degrees);
+//	  if(read_rotation < 400000 && read_rotation > -400000){
+//		  //MKS_rotate(18, 15, flag);
+//		  MKS_set_rotation_speed_F(10, flag);
+//		  //HAL_Delay(10);
+//	  }
+//	  MKS_read_param(Position_angle, Position_angle_length);
+//	  read_rotation = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
+//	  angle = (float)(read_rotation)/(encoder_quality/one_rotation_in_degrees);
 	  MKS_read_param_F(Position_error, Position_error_length);
+	  do{}while(statuss != UART_ready);
 	  read_error = (int16_t)((receive[1] << 8) + (receive[2]));
 	  angle_err = (float)(read_error)/(encoder_quality/one_rotation_in_degrees);
 	  MKS_read_param_F(En_value, En_value_length);
-	  HAL_Delay(10);
+	  HAL_Delay(3);
+	  do{}while(statuss != UART_ready);
 	  encoder_rotations = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
 	  encoder_value = (uint16_t)((receive[5] << 8) + receive[6]);
 	  angle_en = (float)(encoder_value)/(encoder_quality/one_rotation_in_degrees);
 	  if(encoder_rotations >= 1){
 		  flag = true;
-		  MKS_stop_F();
+		  MKS_set_rotation_speed_F(10, flag);
 	  }
 	  if(encoder_rotations <= -1){
 		  flag = false;
-		  MKS_stop_F();
+		  MKS_set_rotation_speed_F(10, flag);
 	  }
 	  if(read_rotation > 800000 || read_rotation < -800000){
 		  MKS_stop_F();

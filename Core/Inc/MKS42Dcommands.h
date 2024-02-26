@@ -9,6 +9,7 @@
 #include "stm32l4xx_hal.h"
 #include <stdbool.h>
 #include <stdint.h>
+#include "tim.h"
 #include "usart.h"
 #include "string.h"
 
@@ -18,6 +19,10 @@
 */
 //customizable defines
 #define Used_UART &huart1
+#define Timer_timeout
+#ifdef Timer_timeout
+	#define Used_timer &htim6
+#endif
 
 //used defines
 #define Address 0xE0
