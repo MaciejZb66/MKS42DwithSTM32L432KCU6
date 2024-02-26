@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -100,6 +101,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART1_UART_Init();
+  MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
   MKS_init();
   /* USER CODE END 2 */
@@ -110,30 +112,30 @@ int main(void)
   {
 	  if(read_rotation < 400000 && read_rotation > -400000){
 		  //MKS_rotate(18, 15, flag);
-		  MKS_set_rotation_speed(10, flag);
+		  MKS_set_rotation_speed_F(10, flag);
 	  }
-	  MKS_read_param(Position_angle, Position_angle_length);
+	  MKS_read_param_F(Position_angle, Position_angle_length);
 	  read_rotation = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
 	  angle = (float)(read_rotation)/(encoder_quality/one_rotation_in_degrees);
-	  MKS_read_param(Position_error, Position_error_length);
+	  MKS_read_param_F(Position_error, Position_error_length);
 	  read_error = (int16_t)((receive[1] << 8) + (receive[2]));
 	  angle_err = (float)(read_error)/(encoder_quality/one_rotation_in_degrees);
-	  MKS_read_param(En_value, En_value_length);
+	  MKS_read_param_F(En_value, En_value_length);
 	  HAL_Delay(10);
 	  encoder_rotations = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
 	  encoder_value = (uint16_t)((receive[5] << 8) + receive[6]);
 	  angle_en = (float)(encoder_value)/(encoder_quality/one_rotation_in_degrees);
 	  if(encoder_rotations >= 1){
 		  flag = true;
-		  MKS_stop();
+		  MKS_stop_F();
 	  }
 	  if(encoder_rotations <= -1){
 		  flag = false;
-		  MKS_stop();
+		  MKS_stop_F();
 	  }
 	  if(read_rotation > 800000 || read_rotation < -800000){
-		  MKS_stop();
-		  MKS_set_param(Enable_move, 0);
+		  MKS_stop_F();
+		  MKS_set_param_F(Enable_move, 0);
 	  }
     /* USER CODE END WHILE */
 

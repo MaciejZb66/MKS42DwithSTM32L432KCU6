@@ -52,9 +52,14 @@ struct Encoder{
 uint8_t CRC_calc(uint8_t length);
 void MKS_init(void);
 void MKS_read_param(uint8_t param, uint8_t length_of_param);
+void MKS_read_param_F(uint8_t param, uint8_t length_of_param);
 void MKS_set_param(uint8_t param, uint8_t value);
+void MKS_set_param_F(uint8_t param, uint8_t value);
 void MKS_rotate(uint16_t rot, uint8_t speed, bool clockwise);
+void MKS_rotate_F(uint16_t rot, uint8_t speed, bool clockwise);
 void MKS_set_rotation_speed(uint8_t speed, bool clockwise);
+void MKS_set_rotation_speed_F(uint8_t speed, bool clockwise);
 void MKS_stop(void);
+void MKS_stop_F(void);
 struct Encoder MKS_get_encoder_value(void);
 

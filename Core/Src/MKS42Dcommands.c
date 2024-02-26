@@ -64,8 +64,16 @@ void MKS_read_param(uint8_t param, uint8_t length_of_param){
 		receive_length = length_of_param;
 		HAL_UART_Transmit_IT(Used_UART, transmit, 3);
 	}else{
-		status = UART_busy;
+		if(status != UART_error){
+			status = UART_busy;
+		}
 	}
+}
+
+void MKS_read_param_F(uint8_t param, uint8_t length_of_param){
+	do{
+		MKS_read_param(param, length_of_param);
+	}while(status == UART_busy);
 }
 
 
@@ -79,8 +87,16 @@ void MKS_set_param(uint8_t param, uint8_t value){
 		receive_length = response_length;
 		HAL_UART_Transmit_IT(Used_UART, transmit, 4);
 	}else{
-		status = UART_busy;
+		if(status != UART_error){
+			status = UART_busy;
+		}
 	}
+}
+
+void MKS_set_param_F(uint8_t param, uint8_t value){
+	do{
+		MKS_set_param(param, value);
+	}while(status == UART_busy);
 }
 
 void MKS_rotate(uint16_t rot, uint8_t speed, bool clockwise){
@@ -104,8 +120,16 @@ void MKS_rotate(uint16_t rot, uint8_t speed, bool clockwise){
 		receive_length = response_length;
 		HAL_UART_Transmit_IT(Used_UART, transmit, 8);
 	}else{
-		status = UART_busy;
+		if(status != UART_error){
+			status = UART_busy;
+		}
 	}
+}
+
+void MKS_rotate_F(uint16_t rot, uint8_t speed, bool clockwise){
+	do{
+		MKS_rotate(rot, speed, clockwise);
+	}while(status == UART_busy);
 }
 
 void MKS_set_rotation_speed(uint8_t speed, bool clockwise){
@@ -123,8 +147,16 @@ void MKS_set_rotation_speed(uint8_t speed, bool clockwise){
 		receive_length = response_length;
 		HAL_UART_Transmit_IT(Used_UART, transmit, 4);
 	}else{
-		status = UART_busy;
+		if(status != UART_error){
+			status = UART_busy;
+		}
 	}
+}
+
+void MKS_set_rotation_speed_F(uint8_t speed, bool clockwise){
+	do{
+		MKS_set_rotation_speed(speed, clockwise);
+	}while(status == UART_busy);
 }
 
 void MKS_stop(void){
@@ -136,13 +168,21 @@ void MKS_stop(void){
 		receive_length = response_length;
 		HAL_UART_Transmit_IT(Used_UART, transmit, 3);
 	}else{
-		status = UART_busy;
+		if(status != UART_error){
+			status = UART_busy;
+		}
 	}
+}
+
+void MKS_stop_F(void){
+	do{
+		MKS_stop();
+	}while(status == UART_busy);
 }
 
 struct Encoder MKS_get_encoder_value(void){
 	struct Encoder En;
-	MKS_read_param(En_value, En_value_length);
+	MKS_read_param_F(En_value, En_value_length);
 	En.encoder_rotations = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
 	En.encoder_value = (uint16_t)((receive[5] << 8) + receive[6]);
 	En.encoder_angle = (float)(encoder_value)/(encoder_quality/one_rotation_in_degrees);
