@@ -55,6 +55,7 @@ struct Encoder{
 
 //prototypes of functions
 uint8_t CRC_calc(uint8_t length);
+void MKS_UART_wait(void);
 void MKS_init(void);
 void MKS_read_param(uint8_t param, uint8_t length_of_param);
 void MKS_read_param_F(uint8_t param, uint8_t length_of_param);

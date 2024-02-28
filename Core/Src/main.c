@@ -121,12 +121,10 @@ int main(void)
 //	  read_rotation = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
 //	  angle = (float)(read_rotation)/(encoder_quality/one_rotation_in_degrees);
 	  MKS_read_param_F(Position_error, Position_error_length);
-	  do{}while(statuss != UART_ready);
 	  read_error = (int16_t)((receive[1] << 8) + (receive[2]));
 	  angle_err = (float)(read_error)/(encoder_quality/one_rotation_in_degrees);
 	  MKS_read_param_F(En_value, En_value_length);
 	  HAL_Delay(3);
-	  do{}while(statuss != UART_ready);
 	  encoder_rotations = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
 	  encoder_value = (uint16_t)((receive[5] << 8) + receive[6]);
 	  angle_en = (float)(encoder_value)/(encoder_quality/one_rotation_in_degrees);

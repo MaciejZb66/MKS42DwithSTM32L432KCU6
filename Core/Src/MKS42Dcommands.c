@@ -58,13 +58,26 @@ uint8_t CRC_calc(uint8_t length){
 	return sum;
 }
 
+void MKS_UART_wait(void){
+	do{
+		if(statuss == UART_processing){
+			#ifdef Timer_timeout
+				HAL_TIM_Base_Start_IT(Used_timer);
+			#endif
+			statuss = UART_busy;
+		}
+	}while(statuss != UART_ready);
+}
+
 void MKS_init(void){
 	  HAL_UART_Init(&huart1);
 	  flag = true;
 	  indx = 0;
+	  statuss = UART_ready;
 	  HAL_UART_Receive_IT(&huart1, buff, 1);
-	  do{ }while(statuss != UART_ready);
+	  MKS_UART_wait();
 	  MKS_set_param(Enable_move, 0x01);
+	  MKS_UART_wait();
 }
 
 void MKS_read_param(uint8_t param, uint8_t length_of_param){
@@ -82,15 +95,9 @@ void MKS_read_param(uint8_t param, uint8_t length_of_param){
 }
 
 void MKS_read_param_F(uint8_t param, uint8_t length_of_param){
-	do{
-		if(statuss == UART_processing){
-			#ifdef Timer_timeout
-				HAL_TIM_Base_Start_IT(Used_timer);
-			#endif
-			statuss = UART_busy;
-		}
-	}while(statuss != UART_ready);
+	MKS_UART_wait();
 	MKS_read_param(param, length_of_param);
+	MKS_UART_wait();
 }
 
 
@@ -107,16 +114,9 @@ void MKS_set_param(uint8_t param, uint8_t value){
 }
 
 void MKS_set_param_F(uint8_t param, uint8_t value){
-
-	do{
-		if(statuss == UART_processing){
-			statuss = UART_busy;
-			#ifdef Timer_timeout
-				HAL_TIM_Base_Start_IT(Used_timer);
-			#endif
-		}
-	}while(statuss != UART_ready);
+	MKS_UART_wait();
 	MKS_set_param(param, value);
+	MKS_UART_wait();
 }
 
 void MKS_rotate(uint16_t rot, uint8_t speed, bool clockwise){
@@ -143,15 +143,9 @@ void MKS_rotate(uint16_t rot, uint8_t speed, bool clockwise){
 }
 
 void MKS_rotate_F(uint16_t rot, uint8_t speed, bool clockwise){
-	do{
-		if(statuss == UART_processing){
-			statuss = UART_busy;
-			#ifdef Timer_timeout
-				HAL_TIM_Base_Start_IT(Used_timer);
-			#endif
-		}
-	}while(statuss != UART_ready);
+	MKS_UART_wait();
 	MKS_rotate(rot, speed, clockwise);
+	MKS_UART_wait();
 }
 
 void MKS_set_rotation_speed(uint8_t speed, bool clockwise){
@@ -172,16 +166,9 @@ void MKS_set_rotation_speed(uint8_t speed, bool clockwise){
 }
 
 void MKS_set_rotation_speed_F(uint8_t speed, bool clockwise){
-
-	do{
-		if(statuss == UART_processing){
-			#ifdef Timer_timeout
-				HAL_TIM_Base_Start_IT(Used_timer);
-			#endif
-			statuss = UART_busy;
-		}
-	}while(statuss != UART_ready);
+	MKS_UART_wait();
 	MKS_set_rotation_speed(speed, clockwise);
+	MKS_UART_wait();
 }
 
 void MKS_stop(void){
@@ -196,22 +183,14 @@ void MKS_stop(void){
 }
 
 void MKS_stop_F(void){
-
-	do{
-		if(statuss == UART_processing){
-			#ifdef Timer_timeout
-				HAL_TIM_Base_Start_IT(Used_timer);
-			#endif
-			statuss = UART_busy;
-		}
-	}while(statuss != UART_ready);
+	MKS_UART_wait();
 	MKS_stop();
+	MKS_UART_wait();
 }
 
 struct Encoder MKS_get_encoder_value(void){
 	struct Encoder En;
 	MKS_read_param_F(En_value, En_value_length);
-	do{}while(statuss != UART_ready);
 	En.encoder_rotations = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
 	En.encoder_value = (uint16_t)((receive[5] << 8) + receive[6]);
 	En.encoder_angle = (float)(encoder_value)/(encoder_quality/one_rotation_in_degrees);
