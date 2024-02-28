@@ -43,7 +43,7 @@
 #define encoder_quality (float)(1<<16)
 //define enum type
 enum UART_status {
-	UART_ready = 0, UART_processing = 1, UART_busy = 2, UART_error = 3
+	UART_ready = 0, UART_processing = 1, UART_busy = 2, UART_error = 3, UART_fix = 4
 };
 
 //used structs
@@ -54,6 +54,7 @@ struct Encoder{
 };
 
 //prototypes of functions
+void MKS_error_handler(void);
 uint8_t CRC_calc(uint8_t length);
 void MKS_UART_wait(void);
 void MKS_init(void);
@@ -67,5 +68,6 @@ void MKS_set_rotation_speed(uint8_t speed, bool clockwise);
 void MKS_set_rotation_speed_F(uint8_t speed, bool clockwise);
 void MKS_stop(void);
 void MKS_stop_F(void);
+void MKS_hard_reset(void);
 struct Encoder MKS_get_encoder_value(void);
 

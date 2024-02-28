@@ -43,12 +43,23 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 
 #ifdef Timer_timeout
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	if(statuss == UART_error){
+		statuss = UART_ready;
+	}
 	if(statuss == UART_busy){
 		statuss = UART_error;
 		HAL_TIM_Base_Stop_IT(Used_timer);
 	}
 }
 #endif
+
+void MKS_error_handler(void){
+	#ifdef Timer_timeout
+		HAL_TIM_Base_Start_IT(Used_timer);
+	#endif
+	statuss = UART_fix;
+	MKS_hard_reset();
+}
 
 uint8_t CRC_calc(uint8_t length){
 	uint8_t sum = 0;
@@ -65,6 +76,9 @@ void MKS_UART_wait(void){
 				HAL_TIM_Base_Start_IT(Used_timer);
 			#endif
 			statuss = UART_busy;
+		}
+		if(statuss == UART_error){
+			MKS_error_handler();
 		}
 	}while(statuss != UART_ready);
 }
@@ -195,4 +209,25 @@ struct Encoder MKS_get_encoder_value(void){
 	En.encoder_value = (uint16_t)((receive[5] << 8) + receive[6]);
 	En.encoder_angle = (float)(encoder_value)/(encoder_quality/one_rotation_in_degrees);
 	return En;
+}
+
+void MKS_hard_reset(void){
+	transmit[0] = Address;
+	transmit[1] = Stop;
+	transmit[2] = CRC_calc(2);
+	HAL_UART_Transmit(Used_UART, transmit, 3, 100);
+	HAL_UART_Receive(Used_UART, receive, response_length, 100);
+	transmit[0] = Address;
+	transmit[1] = Enable_move;
+	transmit[2] = 0;
+	transmit[3] = CRC_calc(2);
+	HAL_UART_Transmit(Used_UART, transmit, 4, HAL_MAX_DELAY);
+	HAL_UART_Receive(Used_UART, receive, response_length, HAL_MAX_DELAY);
+//	transmit[0] = Address;
+//	transmit[1] = Enable_move;
+//	transmit[2] = 1;
+//	transmit[3] = CRC_calc(2);
+//	HAL_UART_Transmit(Used_UART, transmit, 4, HAL_MAX_DELAY);
+//	HAL_UART_Receive(Used_UART, receive, response_length, HAL_MAX_DELAY);
+	statuss = UART_ready;
 }
