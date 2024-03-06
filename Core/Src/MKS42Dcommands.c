@@ -58,7 +58,7 @@ void MKS_error_handler(void){
 		HAL_TIM_Base_Start_IT(Used_timer);
 	#endif
 	statuss = UART_fix;
-	MKS_hard_reset();
+	//MKS_hard_reset();
 }
 
 uint8_t CRC_calc(uint8_t length){
