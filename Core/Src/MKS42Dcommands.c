@@ -133,19 +133,27 @@ void MKS_set_param_F(uint8_t param, uint8_t value){
 	MKS_UART_wait();
 }
 
-void MKS_rotate(uint16_t rot, uint8_t speed, bool clockwise){
+uint8_t RPM_to_speed(uint8_t RPM){
+	uint8_t speed;
+	speed = RPM * one_full_rotation_pulses/ RPM_const;
+	speed &= 0x7f;
+	return speed;
+}
+
+void MKS_rotate(uint16_t rot, uint8_t RPM, bool clockwise){
 	if(statuss == UART_ready){
 		statuss = UART_processing;
 		uint32_t pulses;
+		RPM = RPM_to_speed(RPM);
 		if(clockwise){
-			speed &= 0x7F;
+			RPM &= 0x7F;
 		}else{
-			speed |= 0x80;
+			RPM |= 0x80;
 		}
 		pulses = rot * one_full_rotation_pulses / one_rotation_in_degrees;
 		transmit[0] = Address;
 		transmit[1] = Rotate;
-		transmit[2] = (uint8_t)speed;
+		transmit[2] = (uint8_t)RPM;
 		transmit[3] = (uint8_t)(pulses >> 24);
 		transmit[4] = (uint8_t)(pulses >> 16);
 		transmit[5] = (uint8_t)(pulses >> 8);
@@ -156,32 +164,33 @@ void MKS_rotate(uint16_t rot, uint8_t speed, bool clockwise){
 	}
 }
 
-void MKS_rotate_F(uint16_t rot, uint8_t speed, bool clockwise){
+void MKS_rotate_F(uint16_t rot, uint8_t RPM, bool clockwise){
 	MKS_UART_wait();
-	MKS_rotate(rot, speed, clockwise);
+	MKS_rotate(rot, RPM, clockwise);
 	MKS_UART_wait();
 }
 
-void MKS_set_rotation_speed(uint8_t speed, bool clockwise){
+void MKS_set_rotation_speed(uint8_t RPM, bool clockwise){
 	if(statuss == UART_ready){
 		statuss = UART_processing;
+		RPM = RPM_to_speed(RPM);
 		if(clockwise){
-			speed &= 0x7F;
+			RPM &= 0x7F;
 		}else{
-			speed |= 0x80;
+			RPM |= 0x80;
 		}
 		transmit[0] = Address;
 		transmit[1] = Set_rotation;
-		transmit[2] = (uint8_t)speed;
+		transmit[2] = (uint8_t)RPM;
 		transmit[3] = CRC_calc(3);
 		receive_length = response_length;
 		HAL_UART_Transmit_IT(Used_UART, transmit, 4);
 	}
 }
 
-void MKS_set_rotation_speed_F(uint8_t speed, bool clockwise){
+void MKS_set_rotation_speed_F(uint8_t RPM, bool clockwise){
 	MKS_UART_wait();
-	MKS_set_rotation_speed(speed, clockwise);
+	MKS_set_rotation_speed(RPM, clockwise);
 	MKS_UART_wait();
 }
 
@@ -211,7 +220,7 @@ struct Encoder MKS_get_encoder_value(void){
 	return En;
 }
 
-void MKS_hard_reset(void){
+void MKS_hard_reset(void){ // unused (not expected effect)
 	transmit[0] = Address;
 	transmit[1] = Stop;
 	transmit[2] = CRC_calc(2);

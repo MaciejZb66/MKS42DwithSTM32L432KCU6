@@ -105,7 +105,7 @@ int main(void)
   MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
   MKS_init();
-  MKS_set_rotation_speed_F(10, true);
+  MKS_set_rotation_speed_F(94, true);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -130,11 +130,11 @@ int main(void)
 	  angle_en = (float)(encoder_value)/(encoder_quality/one_rotation_in_degrees);
 	  if(encoder_rotations >= 1){
 		  flag = true;
-		  MKS_set_rotation_speed_F(10, flag);
+		  MKS_set_rotation_speed_F(94, flag);
 	  }
 	  if(encoder_rotations <= -1){
 		  flag = false;
-		  MKS_set_rotation_speed_F(10, flag);
+		  MKS_set_rotation_speed_F(94, flag);
 	  }
 	  if(encoder_rotations >= 5 || encoder_rotations <= -5){
 		  MKS_stop_F();

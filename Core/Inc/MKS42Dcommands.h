@@ -37,6 +37,7 @@
 #define Stop 0xF7
 #define Rotate 0xFD
 #define response_length 3
+#define RPM_const 30000 //from documentation (no idea how to calc)
 #define motor_step 16.0f
 #define motor_type 1.8f
 #define one_rotation_in_degrees 360.0f
@@ -62,10 +63,11 @@ void MKS_read_param(uint8_t param, uint8_t length_of_param);
 void MKS_read_param_F(uint8_t param, uint8_t length_of_param);
 void MKS_set_param(uint8_t param, uint8_t value);
 void MKS_set_param_F(uint8_t param, uint8_t value);
-void MKS_rotate(uint16_t rot, uint8_t speed, bool clockwise);
-void MKS_rotate_F(uint16_t rot, uint8_t speed, bool clockwise);
-void MKS_set_rotation_speed(uint8_t speed, bool clockwise);
-void MKS_set_rotation_speed_F(uint8_t speed, bool clockwise);
+uint8_t RPM_to_speed(uint8_t RPM);
+void MKS_rotate(uint16_t rot, uint8_t RPM, bool clockwise);
+void MKS_rotate_F(uint16_t rot, uint8_t RPM, bool clockwise);
+void MKS_set_rotation_speed(uint8_t RPM, bool clockwise);
+void MKS_set_rotation_speed_F(uint8_t RPM, bool clockwise);
 void MKS_stop(void);
 void MKS_stop_F(void);
 void MKS_hard_reset(void);
