@@ -130,11 +130,23 @@ int main(void)
 	  angle_en = (float)(encoder_value)/(encoder_quality/one_rotation_in_degrees);
 	  if(encoder_rotations >= 1){
 		  flag = true;
-		  MKS_set_rotation_speed_F(94, flag);
+		  if(HAL_GPIO_ReadPin(Button_1_GPIO_Port, Button_1_Pin) == GPIO_PIN_RESET){
+			  MKS_stop_F();
+		  }else{
+			  MKS_set_rotation_speed_F(94, flag);
+		  }
 	  }
 	  if(encoder_rotations <= -1){
 		  flag = false;
+		  if(HAL_GPIO_ReadPin(Button_1_GPIO_Port, Button_1_Pin) == GPIO_PIN_RESET){
+			  MKS_stop_F();
+		  }else{
 		  MKS_set_rotation_speed_F(94, flag);
+		  }
+	  }
+
+	  if(HAL_GPIO_ReadPin(Button_1_GPIO_Port, Button_1_Pin) == GPIO_PIN_RESET){
+		  MKS_stop_F();
 	  }
 	  if(encoder_rotations >= 5 || encoder_rotations <= -5){
 		  MKS_stop_F();
