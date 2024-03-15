@@ -71,6 +71,7 @@ extern int32_t read_rotation;
 extern float angle;
 extern int16_t read_error;
 extern float angle_err;
+bool is_pressed;
 /* USER CODE END 0 */
 
 /**
@@ -128,27 +129,40 @@ int main(void)
 	  encoder_rotations = (int32_t)((receive[1] << 24) + (receive[2] << 16) + (receive[3] << 8) + receive[4]);
 	  encoder_value = (uint16_t)((receive[5] << 8) + receive[6]);
 	  angle_en = (float)(encoder_value)/(encoder_quality/one_rotation_in_degrees);
-	  if(encoder_rotations >= 1){
-		  flag = true;
-		  if(HAL_GPIO_ReadPin(Button_1_GPIO_Port, Button_1_Pin) == GPIO_PIN_RESET){
-			  MKS_stop_F();
-		  }else{
-			  MKS_set_rotation_speed_F(94, flag);
-		  }
-	  }
-	  if(encoder_rotations <= -1){
+//	  if(encoder_rotations >= 1){
+//		  flag = true;
+//		  if(HAL_GPIO_ReadPin(Button_1_GPIO_Port, Button_1_Pin) == GPIO_PIN_RESET){
+//			  MKS_stop_F();
+//		  }else{
+//			  MKS_set_rotation_speed_F(94, flag);
+//		  }
+//	  }
+//	  if(encoder_rotations <= -1){
+//		  flag = false;
+//		  if(HAL_GPIO_ReadPin(Button_1_GPIO_Port, Button_1_Pin) == GPIO_PIN_RESET){
+//			  MKS_stop_F();
+//		  }else{
+//		  MKS_set_rotation_speed_F(94, flag);
+//		  }
+//	  }
+
+	  if(HAL_GPIO_ReadPin(Button_1_GPIO_Port, Button_1_Pin) == GPIO_PIN_RESET){
 		  flag = false;
-		  if(HAL_GPIO_ReadPin(Button_1_GPIO_Port, Button_1_Pin) == GPIO_PIN_RESET){
-			  MKS_stop_F();
-		  }else{
 		  MKS_set_rotation_speed_F(94, flag);
+	  }else{
+		  if(HAL_GPIO_ReadPin(Button_2_GPIO_Port, Button_2_Pin) == GPIO_PIN_RESET){
+			  flag = true;
+			  MKS_set_rotation_speed_F(94, flag);
+		  }else{
+			  MKS_stop_F();
 		  }
 	  }
 
-	  if(HAL_GPIO_ReadPin(Button_1_GPIO_Port, Button_1_Pin) == GPIO_PIN_RESET){
-		  MKS_stop_F();
-	  }
-	  if(encoder_rotations >= 5 || encoder_rotations <= -5){
+
+//	  if(HAL_GPIO_ReadPin(Button_1_GPIO_Port, Button_1_Pin) == GPIO_PIN_RESET){
+//		  MKS_stop_F();
+//	  }
+	  if(encoder_rotations >= 20 || encoder_rotations <= -20){
 		  MKS_stop_F();
 		  MKS_set_param_F(Enable_move, 0);
 	  }
